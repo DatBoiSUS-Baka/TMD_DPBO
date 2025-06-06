@@ -33,7 +33,7 @@ public class DB{
             Class.forName("com.mysql.cj.jdbc.Driver");
             conn = DriverManager.getConnection(DB_URL, USER, PASS);
             if (this.conn != null) {
-                System.out.println("Sepertinya sukses");
+                System.out.println("Koneksi sukses.");
                 conn.setTransactionIsolation(Connection.TRANSACTION_READ_UNCOMMITTED);
             }
         }catch(SQLException e){
