@@ -14,10 +14,11 @@ public class ProsesTHasil {
             tabel = new TableTHasil();
             data = new ArrayList<THasil>();
         } catch (Exception e) {
+            e.printStackTrace();
             error = e.toString();
         }
     }
-
+    
     public void prosesDataUser(){
         try {
             tabel.getUser();
@@ -33,6 +34,7 @@ public class ProsesTHasil {
             tabel.closeConnection();
         } catch (Exception e) {
             // TODO: handle exception
+            e.printStackTrace();
             error = e.toString();
         }
     }
