@@ -1,11 +1,11 @@
 package model;
 
-public class User {
+public class THasil {
     private String id;
     private String nama;
     private String email;
 
-    public User(){
+    public THasil(){
 
     }
 

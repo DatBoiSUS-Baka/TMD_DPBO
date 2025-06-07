@@ -1,18 +1,18 @@
 package presenter;
 
 import java.util.ArrayList;
-import model.TableUser;
-import model.User;
+import model.TableTHasil;
+import model.THasil;
 
-public class prosesUser {
+public class ProsesTHasil {
     private String error;
-    private TableUser tabel;
-    private ArrayList<User> data;
+    private TableTHasil tabel;
+    private ArrayList<THasil> data;
 
-    public prosesUser(){
+    public ProsesTHasil(){
         try {
-            tabel = new TableUser();
-            data = new ArrayList<User>();
+            tabel = new TableTHasil();
+            data = new ArrayList<THasil>();
         } catch (Exception e) {
             error = e.toString();
         }
@@ -22,7 +22,7 @@ public class prosesUser {
         try {
             tabel.getUser();
             while (tabel.getResult().next()) {
-                User user = new User();
+                THasil user = new THasil();
                 user.setId(tabel.getResult().getString(1));
                 user.setNama(tabel.getResult().getString(2));
                 user.setEmail(tabel.getResult().getString(3));

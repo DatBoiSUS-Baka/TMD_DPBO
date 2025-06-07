@@ -9,12 +9,12 @@
  * ===================================================
  */
 
-import view.TampilUser;
+import view.TampilTHasil;
 
 public class App {
     public static void main(String[] args){
         // Memanggil modul view untuk menampilkan user
-        TampilUser tampiluser = new TampilUser();
+        TampilTHasil tampiluser = new TampilTHasil();
         tampiluser.tampil();
     }
 }
