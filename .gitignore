@@ -1,3 +1,9 @@
 TugasMasaDepanIndividuIK-290.pdf
 TMD/.vscode/settings.json
 .vscode/settings.json
+TMD/bin/view/TampilTHasil.class
+TMD/bin/presenter/ProsesTHasil.class
+TMD/bin/model/THasil.class
+TMD/bin/model/TableTHasil.class
+TMD/bin/model/DB.class
+TMD/bin/App.class
