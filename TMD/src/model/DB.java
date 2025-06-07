@@ -46,9 +46,6 @@ public class DB{
         try{
             stmt = conn.createStatement();
             result = stmt.executeQuery(Query);
-            if (stmt.execute(Query)) {
-                result = stmt.getResultSet();
-            }
         }catch (SQLException es){
             throw es;
         }
