@@ -33,7 +33,6 @@ public class ProsesTHasil {
             tabel.closeResult();
             tabel.closeConnection();
         } catch (Exception e) {
-            // TODO: handle exception
             e.printStackTrace();
             error = e.toString();
         }
