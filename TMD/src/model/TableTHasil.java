@@ -12,7 +12,6 @@ public class TableTHasil extends DB{
             String query = "SELECT * FROM thasil";
             createQuery(query);
         } catch (Exception e) {
-            // TODO: handle exception
             System.out.println(e.toString());
         }
     }
