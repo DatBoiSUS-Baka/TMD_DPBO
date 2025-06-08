@@ -1,11 +1,35 @@
 package view;
 
 import presenter.ProsesTHasil;
+import javax.swing.JFrame;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTextArea;
+import java.awt.BorderLayout;
 
-public class TampilTHasil{
+public class TampilTHasil extends JFrame{
     private ProsesTHasil prosesHasil;
+    private JTextArea displayArea;
+
     public TampilTHasil(){
+        setTitle("TMD Bola-bola");
+        setSize(700, 600);
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setLocationRelativeTo(null);
+
         prosesHasil = new ProsesTHasil();
+
+        JPanel panel = new JPanel(new BorderLayout());
+        displayArea = new JTextArea();
+        displayArea.setEditable(false);
+
+        JScrollPane scrollPane = new JScrollPane(displayArea);
+
+        panel.add(scrollPane, BorderLayout.CENTER);
+
+        this.add(panel);
+
+        tampil();
     }
 
     public void tampil(){
@@ -20,10 +44,10 @@ public class TampilTHasil{
                 hasil = hasil + "=====================================\n";
             }
 
-            System.out.println("======================================");
-            System.out.println(hasil);
+            displayArea.setText(hasil.toString());
         }catch(Exception e){
-            System.out.println(prosesHasil.getError());
+            displayArea.setText("Terjadi sebuah kesalahan:\n" + prosesHasil.getError());
+            e.printStackTrace();
         }
     }
 }
