@@ -9,12 +9,19 @@
  * ===================================================
  */
 
+import javax.swing.SwingUtilities;
 import view.TampilTHasil;
 
 public class App {
     public static void main(String[] args){
         // Memanggil modul view untuk menampilkan user
-        TampilTHasil tampiluser = new TampilTHasil();
-        tampiluser.tampil();
+        SwingUtilities.invokeLater(new Runnable() {
+            // Menggunakan invokeLater agar tidak terjadi error ketika menjalankan App
+            public void run(){
+                TampilTHasil tampiluser = new TampilTHasil();
+                tampiluser.setVisible(true);
+
+            }
+        });
     }
 }
