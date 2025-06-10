@@ -17,3 +17,5 @@ TMD/bin/presenter/GamePresenter$1.class
 TMD/bin/presenter/GamePresenter.class
 TMD/bin/model/Pemain.class
 TMD/bin/model/Bola.class
+TMD/bin/view/GameLoopContract.class
+TMD/bin/presenter/GamePresenter$KeyHandler.class
