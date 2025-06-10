@@ -13,11 +13,15 @@ package model;
 public class Pemain {
     private int positionX;
     private int positionY;
+    private int SPD;
+    private int size;
     private int score;
 
     public Pemain(int startX, int startY){
         this.positionX = startX;
         this.positionY = startY;
+        this.size = 100;
+        this.SPD = 2;
         this.score = 0;
     }
 
@@ -33,10 +37,13 @@ public class Pemain {
         return this.score;
     }
 
+    public int getSize() { return this.size; }
+    public int getSPD() { return this.SPD; }
+
     public void gerak(int dx, int dy){
-        // Method untuk berpindah posisi (tanpa velocity)
-        this.positionX += dx;
-        this.positionY += dy;
+        // Method untuk berpindah posisi
+        this.positionX += dx * this.SPD;
+        this.positionY += dy * this.SPD;
     }
 
     public void tambahScore(int newScore){
