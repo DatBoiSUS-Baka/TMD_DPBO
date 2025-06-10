@@ -17,10 +17,14 @@ import javax.swing.SwingUtilities;
 
 import model.Pemain;
 import presenter.GamePresenter;
+import presenter.GameOverListener;
 import view.MainGameView;
 import view.MenuView;
 
-public class App {
+public class App implements GameOverListener{
+    private static CardLayout cardLayout;
+    private static JPanel mainPanel;
+    private static GamePresenter presenter;
     public static void main(String[] args){
         SwingUtilities.invokeLater(new Runnable() {
             // Menggunakan invokeLater agar tidak terjadi error ketika menjalankan App
@@ -36,20 +40,21 @@ public class App {
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
         // Menggunakan CardLayout untuk merubah halaman
-        CardLayout cardLayout = new CardLayout();
-        JPanel mainPanel = new JPanel(cardLayout);
+        cardLayout = new CardLayout();
+        mainPanel = new JPanel(cardLayout);
 
         // Instansiasi berbagai macam view yang ada
         MenuView menuView = new MenuView();
         MainGameView gameView = new MainGameView();
-        
+
         // Tambahkan view ke Panel
         mainPanel.add(menuView, "MENU");
         mainPanel.add(gameView, "GAME");
 
         // Membuat model dan presenter untuk bagian Game utama (Gameloop)
-        Pemain pemain = new Pemain(50, 50);
-        GamePresenter presenter = new GamePresenter(pemain, gameView);
+        Pemain pemain = new Pemain((frame.getWidth()/2), (frame.getHeight()/2));
+        presenter = new GamePresenter(pemain, gameView);
+        presenter.setGameOverListener(new App());
         gameView.setPemain(pemain);
 
         // Logika untuk mengubah halaman
@@ -72,6 +77,17 @@ public class App {
         // Tunjukkan menu terlebih dahulu
         cardLayout.show(mainPanel, "MENU");
 
+    }
+
+    @Override
+    public void gameOver(){
+        /*
+         * Menunjukkan view game over dari cardlayout
+         * serta melakukan reset posisi
+         */
+        cardLayout.show(mainPanel, "MENU");
+
+        presenter.resetGame();
     }
 
 }
