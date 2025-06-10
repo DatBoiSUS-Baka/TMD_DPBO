@@ -11,6 +11,8 @@ package model;
  */
 
 public class Pemain {
+    private final int startX;
+    private final int startY;
     private int positionX;
     private int positionY;
     private int SPD;
@@ -18,25 +20,20 @@ public class Pemain {
     private int score;
 
     public Pemain(int startX, int startY){
+        this.startX = startX;
+        this.startY = startY;
         this.positionX = startX;
         this.positionY = startY;
         this.size = 100;
         this.SPD = 10;
         this.score = 0;
+
+        reset(); // Melakukan reset terlebih dahulu
     }
 
-    public int getPosX(){
-        return this.positionX;
-    }
-
-    public int getPosY(){
-        return this.positionY;
-    }
-
-    public int getScore(){
-        return this.score;
-    }
-
+    public int getPosX(){ return this.positionX; }
+    public int getPosY(){ return this.positionY; }
+    public int getScore(){ return this.score; }
     public int getSize() { return this.size; }
     public int getSPD() { return this.SPD; }
 
@@ -45,6 +42,7 @@ public class Pemain {
         int newX = this.positionX + (dx * this.SPD);
         int newY = this.positionY + (dy * this.SPD);
 
+        // Cek apakah pemain berada di dalam layar atau tidak
         if (newX >= 0 && (newX + this.size) <= boundX) {
             this.positionX = newX;
         }
@@ -56,5 +54,14 @@ public class Pemain {
     public void tambahScore(int newScore){
         // Method untuk menambahkan score pemeran utama
         this.score += newScore;
+    }
+
+    public void reset(){
+        /*
+         * Method untuk melakukan reset posisi dan skor awal pemain
+         */
+        this.positionX = this.startX;
+        this.positionY = this.startY;
+        this.score = 0;
     }
 }
