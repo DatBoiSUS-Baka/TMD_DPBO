@@ -15,7 +15,8 @@ public class GamePresenter {
     private Pemain pemain;
     private MainGameView panel;
 
-    private Timer gameLoop;
+    private int currentFrame = 0;
+    private int frameCounter = 0;
 
     private final Set<Integer> pressedKeys = new HashSet<>();
 
@@ -25,16 +26,10 @@ public class GamePresenter {
 
         this.panel.addKeyListener(new KeyHandler());
 
-        this.gameLoop = new Timer(16, new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e){
-                updateGame();
-            }
-        });
     }
 
     public void startGame(){
-        gameLoop.start();
+        panel.startGameLoop();
     }
 
     public void updateGame(){
@@ -59,10 +54,22 @@ public class GamePresenter {
         }
         // Memanggil method gerak ketika mendapat arah gerak
         if (dx != 0 || dy != 0) {
-            pemain.gerak(dx, dy);
+            pemain.gerak(dx, dy, panel.getWidth(), panel.getHeight());
         }
 
+        updateAnimation();
+
+        panel.setCurrentFrame(this.currentFrame);
+
         panel.refreshView();
+    }
+
+    private void updateAnimation() {
+        frameCounter++;
+        if (frameCounter > 10) {
+            currentFrame = (currentFrame + 1) % 2; // Assuming 2 frames
+            frameCounter = 0;
+        }
     }
 
     private class KeyHandler extends KeyAdapter{

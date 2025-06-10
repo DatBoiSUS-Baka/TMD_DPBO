@@ -53,10 +53,12 @@ public class App {
         gameView.setPemain(pemain);
 
         // Logika untuk mengubah halaman
+        gameView.setPresenter(presenter);
+
         menuView.addStartButtonListener(e -> {
             cardLayout.show(mainPanel, "GAME"); 
             gameView.setFocusable(true);
-        	gameView.requestFocusInWindow();
+            gameView.requestFocusInWindow();
             presenter.startGame();
         });
 
