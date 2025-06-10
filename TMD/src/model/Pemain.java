@@ -21,7 +21,7 @@ public class Pemain {
         this.positionX = startX;
         this.positionY = startY;
         this.size = 100;
-        this.SPD = 2;
+        this.SPD = 10;
         this.score = 0;
     }
 
