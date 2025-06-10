@@ -12,11 +12,6 @@ public class TampilTHasil extends JFrame{
     private JTextArea displayArea;
 
     public TampilTHasil(){
-        setTitle("TMD Bola-bola");
-        setSize(700, 600);
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setLocationRelativeTo(null);
-
         prosesHasil = new ProsesTHasil();
 
         JPanel panel = new JPanel(new BorderLayout());
