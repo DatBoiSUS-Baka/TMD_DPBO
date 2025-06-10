@@ -8,3 +8,12 @@ TMD/bin/model/TableTHasil.class
 TMD/bin/model/DB.class
 TMD/bin/App.class
 TMD/bin/App$1.class
+TMD/bin/view/viewContract.class
+TMD/bin/view/MenuView.class
+TMD/bin/view/MainGameView.class
+TMD/bin/view/GameWindow.class
+TMD/bin/view/GamePanel.class
+TMD/bin/presenter/GamePresenter$1.class
+TMD/bin/presenter/GamePresenter.class
+TMD/bin/model/Pemain.class
+TMD/bin/model/Bola.class
