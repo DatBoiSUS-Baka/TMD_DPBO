@@ -63,7 +63,7 @@ public class App {
         // Setup dari frame
         frame.add(mainPanel);
         frame.pack();
-        frame.setSize(800, 700);
+        frame.setSize(1500, 800);
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
 
