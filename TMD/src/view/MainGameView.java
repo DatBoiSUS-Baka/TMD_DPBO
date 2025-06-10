@@ -13,7 +13,7 @@ public class MainGameView extends JPanel implements GameLoopContract{
     private Pemain pemain;
 
     public MainGameView(){
-        setPreferredSize(new Dimension(800, 600));
+        setPreferredSize(new Dimension(1000, 800));
     }
 
     public void setPemain(Pemain pemain) { this.pemain = pemain; }
