@@ -39,10 +39,17 @@ public class MainGameView extends JPanel implements GameLoopContract, Runnable{
     public void setCurrentFrame(int frame) { this.currentFrame = frame; }
 
     public void startGameLoop(){
-        if (gameThread == null) {
+        if (gameThread == null || !running) {
             running = true;
             gameThread = new Thread(this);
             gameThread.start();
+        }
+    }
+
+    public void stopGameLoop(){
+        if (running) {
+            running = false;
+            gameThread = null;
         }
     }
 
