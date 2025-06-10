@@ -2,6 +2,7 @@ package presenter;
 
 import model.Pemain;
 import view.MainGameView;
+import presenter.GameOverListener;
 
 import javax.swing.Timer;
 import java.awt.event.ActionEvent;
@@ -18,6 +19,8 @@ public class GamePresenter {
     private int currentFrame = 0;
     private int frameCounter = 0;
 
+    private GameOverListener gameOverListener;
+
     private final Set<Integer> pressedKeys = new HashSet<>();
 
     public GamePresenter(Pemain pemain, MainGameView panel){
@@ -25,8 +28,9 @@ public class GamePresenter {
         this.panel = panel;
 
         this.panel.addKeyListener(new KeyHandler());
-
     }
+
+    public void setGameOverListener(GameOverListener gameOverListener) { this.gameOverListener = gameOverListener; }
 
     public void startGame(){
         panel.startGameLoop();
@@ -52,6 +56,7 @@ public class GamePresenter {
         if (pressedKeys.contains(KeyEvent.VK_RIGHT) || pressedKeys.contains(KeyEvent.VK_D)) {
             dx = 1;
         }
+
         // Memanggil method gerak ketika mendapat arah gerak
         if (dx != 0 || dy != 0) {
             pemain.gerak(dx, dy, panel.getWidth(), panel.getHeight());
@@ -62,6 +67,16 @@ public class GamePresenter {
         panel.setCurrentFrame(this.currentFrame);
 
         panel.refreshView();
+    }
+
+    public void resetGame(){
+        this.pressedKeys.clear();
+        this.currentFrame = 0;
+        this.frameCounter = 0;
+
+        if (pemain != null) {
+            pemain.reset();
+        }
     }
 
     private void updateAnimation() {
@@ -78,7 +93,14 @@ public class GamePresenter {
          */
         @Override
         public void keyPressed(KeyEvent e){
-            pressedKeys.add(e.getKeyCode());
+            if (e.getKeyCode() == KeyEvent.VK_SPACE) {
+                panel.stopGameLoop();
+                if (gameOverListener != null) {
+                    gameOverListener.gameOver();
+                }
+            }else{
+                pressedKeys.add(e.getKeyCode());
+            }
         }
 
         @Override
