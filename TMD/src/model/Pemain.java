@@ -40,10 +40,17 @@ public class Pemain {
     public int getSize() { return this.size; }
     public int getSPD() { return this.SPD; }
 
-    public void gerak(int dx, int dy){
+    public void gerak(int dx, int dy, int boundX, int boundY){
         // Method untuk berpindah posisi
-        this.positionX += dx * this.SPD;
-        this.positionY += dy * this.SPD;
+        int newX = this.positionX + (dx * this.SPD);
+        int newY = this.positionY + (dy * this.SPD);
+
+        if (newX >= 0 && (newX + this.size) <= boundX) {
+            this.positionX = newX;
+        }
+        if (newY >= 0 && (newY + this.size) <= boundY) {
+            this.positionY = newY;
+        }
     }
 
     public void tambahScore(int newScore){
