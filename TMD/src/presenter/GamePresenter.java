@@ -1,6 +1,7 @@
 package presenter;
 
 import model.Pemain;
+import model.BolaManager;
 import view.MainGameView;
 import presenter.GameOverListener;
 
@@ -14,6 +15,7 @@ import java.util.Set;
 
 public class GamePresenter {
     private Pemain pemain;
+    private BolaManager managerBola;
     private MainGameView panel;
 
     private int currentFrame = 0;
@@ -23,8 +25,9 @@ public class GamePresenter {
 
     private final Set<Integer> pressedKeys = new HashSet<>();
 
-    public GamePresenter(Pemain pemain, MainGameView panel){
+    public GamePresenter(Pemain pemain, MainGameView panel, BolaManager managerBola){
         this.pemain = pemain;
+        this.managerBola = managerBola;
         this.panel = panel;
 
         this.panel.addKeyListener(new KeyHandler());
@@ -34,6 +37,7 @@ public class GamePresenter {
 
     public void startGame(){
         panel.startGameLoop();
+        managerBola.spawnBola(10, panel.getWidth());
     }
 
     public void updateGame(){
@@ -64,6 +68,8 @@ public class GamePresenter {
 
         updateAnimation();
 
+        panel.setBola(managerBola.getBola());
+
         panel.setCurrentFrame(this.currentFrame);
 
         panel.refreshView();
@@ -77,6 +83,7 @@ public class GamePresenter {
         if (pemain != null) {
             pemain.reset();
         }
+        managerBola.spawnBola(10, panel.getWidth());
     }
 
     private void updateAnimation() {
