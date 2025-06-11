@@ -33,9 +33,8 @@ public class Bola {
     public int getSize() { return this.size; }
     public int getDirection() { return this.direction; }
 
-    public void setDirection(int direction) {
-        this.direction = direction;
-    }
+    public void setDirection(int direction) { this.direction = direction; }
+    public void setValue(int value){ this.value = value; }
 
     public void gerak(){
         /*
