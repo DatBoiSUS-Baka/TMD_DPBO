@@ -20,3 +20,4 @@ TMD/bin/model/Bola.class
 TMD/bin/view/GameLoopContract.class
 TMD/bin/presenter/GamePresenter$KeyHandler.class
 TMD/bin/presenter/GameOverListener.class
+TMD/bin/model/BolaManager.class

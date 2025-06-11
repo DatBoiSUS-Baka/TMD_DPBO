@@ -16,6 +16,7 @@ import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 
 import model.Pemain;
+import model.BolaManager;
 import presenter.GamePresenter;
 import presenter.GameOverListener;
 import view.MainGameView;
@@ -53,7 +54,8 @@ public class App implements GameOverListener{
 
         // Membuat model dan presenter untuk bagian Game utama (Gameloop)
         Pemain pemain = new Pemain((frame.getWidth()/2), (frame.getHeight()/2));
-        presenter = new GamePresenter(pemain, gameView);
+        BolaManager managerBola = new BolaManager();
+        presenter = new GamePresenter(pemain, gameView, managerBola);
         presenter.setGameOverListener(new App());
         gameView.setPemain(pemain);
 
