@@ -1,6 +1,7 @@
 package presenter;
 
 import model.Pemain;
+import model.Bola;
 import model.BolaManager;
 import view.MainGameView;
 import presenter.GameOverListener;
@@ -77,6 +78,12 @@ public class GamePresenter {
             pemain.gerak(dx, dy, panel.getWidth(), panel.getHeight());
         }
 
+        Bola collidedBola = managerBola.checkCollision(pemain);
+        if (collidedBola != null) {
+            pemain.tambahScore(collidedBola.getValue());
+            System.out.println("Terjadi collision!");
+        }
+
         managerBola.updateAllBolas(panel.getWidth());
 
         if (managerBola.getBola().isEmpty()) {
@@ -88,6 +95,8 @@ public class GamePresenter {
         panel.setBola(managerBola.getBola());
 
         panel.setCurrentFrame(this.currentFrame);
+
+        panel.setScore(pemain.getScore());
 
         panel.refreshView();
     }
