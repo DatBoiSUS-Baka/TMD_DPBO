@@ -10,6 +10,8 @@ package model;
  * ===================================================
  */
 
+import model.Pancingan;
+
 public class Pemain {
     private final int startX;
     private final int startY;
@@ -19,6 +21,8 @@ public class Pemain {
     private int size;
     private int score;
 
+    private Pancingan pancingan;
+
     public Pemain(int startX, int startY){
         this.startX = startX;
         this.startY = startY;
@@ -27,6 +31,7 @@ public class Pemain {
         this.size = 100;
         this.SPD = 10;
         this.score = 0;
+        this.pancingan = new Pancingan();
 
         reset(); // Melakukan reset terlebih dahulu
     }
@@ -36,6 +41,7 @@ public class Pemain {
     public int getScore(){ return this.score; }
     public int getSize() { return this.size; }
     public int getSPD() { return this.SPD; }
+    public Pancingan getPancingan() { return this.pancingan; }
 
     public void setPosition(int x, int y){ this.positionX = x; this.positionY = y; }
 
