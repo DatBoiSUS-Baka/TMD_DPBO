@@ -121,6 +121,7 @@ public class GamePresenter {
 
         if (pemain != null) {
             pemain.reset();
+            pemain.setPosition((panel.getWidth()/2) - (pemain.getSize() / 2), (panel.getHeight() / 2) - (pemain.getSize() / 2));
         }
         managerBola.spawnBola(10, panel.getWidth(), panel.getHeight());
     }
