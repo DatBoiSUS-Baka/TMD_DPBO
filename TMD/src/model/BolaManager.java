@@ -14,6 +14,7 @@ package model;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.random.RandomGenerator;
+import java.awt.Rectangle;
 
 import model.Bola;
 
@@ -49,8 +50,11 @@ public class BolaManager {
             direction = -1;
         }
 
+        int randomValue = random.nextInt(1, 101);
+
         collectionBola.addLast(new Bola(startX, startY));
         collectionBola.getLast().setDirection(direction);
+        collectionBola.getLast().setValue(randomValue);
     }
 
     public void updateAllBolas(int screenWidth){
@@ -64,6 +68,24 @@ public class BolaManager {
                 it.remove();
             }
         }
+    }
+
+    public Bola checkCollision (Pemain pemain){
+        /*
+         * Method untuk mengecek kolisi dari bola
+         * dan pemain
+         */
+        Iterator<Bola> it = collectionBola.iterator();
+        Rectangle hitBoxPemain = new Rectangle(pemain.getPosX(), pemain.getPosY(), pemain.getSize(), pemain.getSize());
+        while (it.hasNext()) {
+            Bola currentBola = it.next();
+            Rectangle hitBoxBola = new Rectangle(currentBola.getPosX(), currentBola.getPosY(), currentBola.getSize(), currentBola.getSize());
+            if (hitBoxPemain.intersects(hitBoxBola)) {
+                it.remove();
+                return currentBola;    
+            }
+        }
+        return null;
     }
 
     public ArrayList<Bola> getBola(){ return collectionBola; }
