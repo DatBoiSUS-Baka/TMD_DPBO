@@ -2,6 +2,7 @@ package view;
 
 import java.awt.Dimension;
 import java.awt.event.KeyListener;
+import java.util.ArrayList;
 
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
@@ -9,12 +10,16 @@ import javax.swing.SwingUtilities;
 import model.Pemain;
 import presenter.GamePresenter;
 import view.GameLoopContract;
+import model.Bola;
+import model.BolaManager;
+
 import java.awt.Graphics;
 import java.awt.Color;
 import java.awt.Image;
 
 public class MainGameView extends JPanel implements GameLoopContract, Runnable{
     private Pemain pemain;
+    private ArrayList<Bola> bolas;
     private GamePresenter presenter;
 
     // Variabel Thread
@@ -28,6 +33,8 @@ public class MainGameView extends JPanel implements GameLoopContract, Runnable{
     public MainGameView(){
         setPreferredSize(new Dimension(1000, 800));
         loadAnimationFrames();
+
+        bolas = new ArrayList<Bola>();
     }
 
     public void loadAnimationFrames(){
@@ -36,6 +43,7 @@ public class MainGameView extends JPanel implements GameLoopContract, Runnable{
 
     public void setPemain(Pemain pemain) { this.pemain = pemain; }
     public void setPresenter(GamePresenter presenter) { this.presenter = presenter; }
+    public void setBola(ArrayList<Bola> bola) { this.bolas = bola; }
     public void setCurrentFrame(int frame) { this.currentFrame = frame; }
 
     public void startGameLoop(){
@@ -86,6 +94,13 @@ public class MainGameView extends JPanel implements GameLoopContract, Runnable{
                 g.setColor(Color.RED);
             }
             g.fillRect(pemain.getPosX(), pemain.getPosY(), pemain.getSize(), pemain.getSize());
+        }
+
+        for (Bola bola : bolas) {
+            if (bola != null) {
+                g.setColor(Color.ORANGE);
+                g.fillOval(bola.getPosX(), bola.getPosY(), bola.getSize(), bola.getSize());
+            }
         }
     }
 
