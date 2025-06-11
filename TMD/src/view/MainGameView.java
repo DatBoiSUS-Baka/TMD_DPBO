@@ -1,5 +1,16 @@
 package view;
 
+/* ===================================================
+ * Filename     : MainGameView.java
+ * Programmer   : Kasyful Haq Bachariputra
+ * Date         : 11 Juni 2025
+ * Email        : kasyfulhaqb@upi.edu
+ * Deskripsi    : package view yang bertugas untuk
+ *                menampilkan view ketika game loop 
+ *                berjalan
+ * ===================================================
+ */
+
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.event.KeyListener;
