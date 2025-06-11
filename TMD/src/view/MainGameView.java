@@ -1,21 +1,21 @@
 package view;
 
 import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.event.KeyListener;
+import java.awt.Graphics;
+import java.awt.Color;
+import java.awt.Image;
 import java.util.ArrayList;
 
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 
 import model.Pemain;
-import presenter.GamePresenter;
-import view.GameLoopContract;
 import model.Bola;
 import model.BolaManager;
-
-import java.awt.Graphics;
-import java.awt.Color;
-import java.awt.Image;
+import presenter.GamePresenter;
+import view.GameLoopContract;
 
 public class MainGameView extends JPanel implements GameLoopContract, Runnable{
     private Pemain pemain;
@@ -29,6 +29,7 @@ public class MainGameView extends JPanel implements GameLoopContract, Runnable{
 
     private Image[] playerWalkingFrames;
     private int currentFrame = 0;
+    private int scoreToShow = 0;
 
     public MainGameView(){
         setPreferredSize(new Dimension(1000, 800));
@@ -45,6 +46,7 @@ public class MainGameView extends JPanel implements GameLoopContract, Runnable{
     public void setPresenter(GamePresenter presenter) { this.presenter = presenter; }
     public void setBola(ArrayList<Bola> bola) { this.bolas = bola; }
     public void setCurrentFrame(int frame) { this.currentFrame = frame; }
+    public void setScore(int score) { this.scoreToShow = score; }
 
     public void startGameLoop(){
         if (gameThread == null || !running) {
@@ -101,7 +103,20 @@ public class MainGameView extends JPanel implements GameLoopContract, Runnable{
                 g.setColor(Color.ORANGE);
                 g.fillOval(bola.getPosX(), bola.getPosY(), bola.getSize(), bola.getSize());
             }
+            String value = String.valueOf(bola.getValue());
+            g.setColor(Color.WHITE);
+            g.setFont(new Font("TimesRoman", Font.BOLD, 15));
+
+            int ballCenterX = bola.getPosX() + (bola.getSize() / 2);
+            int ballCenterY = bola.getPosY() + (bola.getSize() / 2);
+            int textWidth = g.getFontMetrics().stringWidth(value);
+
+            g.drawString(value, ballCenterX - (textWidth / 2), ballCenterY + 5);
         }
+
+        g.setColor(Color.BLACK);
+        g.setFont(new Font("TimesRoman", Font.BOLD, 20));
+        g.drawString("Score: " + scoreToShow, 50, this.getHeight() / 2);
     }
 
     @Override
