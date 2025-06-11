@@ -14,9 +14,13 @@ package view;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.event.KeyListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.awt.Graphics;
 import java.awt.Color;
 import java.awt.Image;
+import java.awt.event.MouseMotionListener;
+
 import java.util.ArrayList;
 
 import javax.swing.JPanel;
@@ -28,7 +32,7 @@ import model.BolaManager;
 import presenter.GamePresenter;
 import view.GameLoopContract;
 
-public class MainGameView extends JPanel implements GameLoopContract, Runnable{
+public class MainGameView extends JPanel implements GameLoopContract, Runnable, MouseListener, MouseMotionListener{
     private Pemain pemain;
     private ArrayList<Bola> bolas;
     private GamePresenter presenter;
@@ -45,11 +49,16 @@ public class MainGameView extends JPanel implements GameLoopContract, Runnable{
     public MainGameView(){
         setPreferredSize(new Dimension(1000, 800));
         loadAnimationFrames();
+        addMouseListener(this);
+        addMouseMotionListener(this);
 
         bolas = new ArrayList<Bola>();
     }
 
     public void loadAnimationFrames(){
+        /*
+         * TODO: Masukkin sprite yang mau dipake
+         */
         playerWalkingFrames = new Image[2];
     }
 
@@ -125,6 +134,7 @@ public class MainGameView extends JPanel implements GameLoopContract, Runnable{
             g.drawString(value, ballCenterX - (textWidth / 2), ballCenterY + 5);
         }
 
+        // Render Teks Score
         g.setColor(Color.BLACK);
         g.setFont(new Font("TimesRoman", Font.BOLD, 20));
         g.drawString("Score: " + scoreToShow, 50, this.getHeight() / 2);
@@ -139,4 +149,28 @@ public class MainGameView extends JPanel implements GameLoopContract, Runnable{
     public void addKeyListener(KeyListener key){
         super.addKeyListener(key);
     }
+
+    @Override
+    public void mousePressed(MouseEvent e){presenter.handleMouseClicked(); }
+    @Override
+    public void mouseMoved(MouseEvent e){
+        /*
+         * Method untuk update posisi pancingan/hook
+         * berdasarkan posisi mouse
+         */
+        int x = e.getX();
+        int y = e.getY();
+
+        presenter.updateHookPosition(x, y);
+    }
+    @Override
+    public void mouseEntered(MouseEvent e){ }
+    @Override
+    public void mouseReleased(MouseEvent e){ }
+    @Override
+    public void mouseClicked(MouseEvent e){ }
+    @Override
+    public void mouseExited(MouseEvent e){ }
+    @Override
+    public void mouseDragged(MouseEvent e){ }
 }
