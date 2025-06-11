@@ -1,7 +1,13 @@
 package model;
 
-/*
- * 11 Juni 2025
+/* ===================================================
+ * Filename     : Bola.java
+ * Programmer   : Kasyful Haq Bachariputra
+ * Date         : 11 Juni 2025
+ * Email        : kasyfulhaqb@upi.edu
+ * Deskripsi    : package model sebagai representasi Bola/target
+ * 
+ * ===================================================
  */
 
 public class Bola {
@@ -10,6 +16,7 @@ public class Bola {
     private int speed;
     private int value;
     private int size;
+    private int direction;
 
     public Bola(int startX, int startY){
         this.positionX = startX;
@@ -24,12 +31,17 @@ public class Bola {
     public int getSpeed() { return this.speed; }
     public int getValue() { return this.value; }
     public int getSize() { return this.size; }
+    public int getDirection() { return this.direction; }
 
-    public void gerak(int dx, int dy){
+    public void setDirection(int direction) {
+        this.direction = direction;
+    }
+
+    public void gerak(){
         /*
          * Method untuk membuat bola dapat bergerak
+         * horizontal berdasarkan direction
          */
-        int newX = this.positionX + (dx * speed);
-        int newY = this.positionY + (dy * speed);
+        positionX += this.speed * direction;
     }
 }
