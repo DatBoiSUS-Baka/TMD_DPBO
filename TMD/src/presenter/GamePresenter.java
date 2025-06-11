@@ -49,9 +49,12 @@ public class GamePresenter {
         this.panel.addKeyListener(new KeyHandler());
     }
 
-    public void setGameOverListener(GameOverListener gameOverListener) { this.gameOverListener = gameOverListener; }
+    public void setGameOverListener(GameOverListener gameOverListener) { this.gameOverListener = gameOverListener; } //Listener untuk ketika terjadi game over
 
     public void startGame(){
+        /*
+         * Method yang dipanggil ketika game pertama dimulai
+         */
         panel.startGameLoop();
         spawnCountdown = random.nextInt(30, 60);
         managerBola.spawnBola(10, panel.getWidth(), panel.getHeight());
@@ -62,6 +65,7 @@ public class GamePresenter {
         int dy = 0;
         spawnCountdown--;
 
+        // Apabila spawn countdown sudah 0, spawn bola baru
         if (spawnCountdown == 0) {
             managerBola.spawnSatuBola(panel.getWidth(), panel.getHeight());
             spawnCountdown = random.nextInt(30, 60);
@@ -89,14 +93,16 @@ public class GamePresenter {
             pemain.gerak(dx, dy, panel.getWidth(), panel.getHeight());
         }
 
+        // Cek kolisi bola dengan pemain
         Bola collidedBola = managerBola.checkCollision(pemain);
         if (collidedBola != null) {
             pemain.tambahScore(collidedBola.getValue());
             System.out.println("Terjadi collision!");
         }
 
-        managerBola.updateAllBolas(panel.getWidth());
+        managerBola.updateAllBolas(panel.getWidth()); //Update posisi bola
 
+        // Apabila bola sudah habis, langsung tambah lagi 5
         if (managerBola.getBola().isEmpty()) {
             managerBola.spawnBola(5, panel.getWidth(), panel.getHeight());
         }
@@ -113,6 +119,9 @@ public class GamePresenter {
     }
 
     public void resetGame(){
+        /*
+         * Method untuk melakukan reset game
+         */
         this.pressedKeys.clear();
         this.currentFrame = 0;
         this.frameCounter = 0;
@@ -133,6 +142,19 @@ public class GamePresenter {
             currentFrame = (currentFrame + 1) % 2; // Assuming 2 frames
             frameCounter = 0;
         }
+    }
+
+    public void handleMouseClicked(){
+        /*
+         * Ketika mendapat signal mouseClicked,
+         * akan memanggil function tryToCatch
+         */
+        pemain.getPancingan().tryToCatch(managerBola.getBola());
+    }
+
+    public void updateHookPosition(int x, int y){
+        // Meng-update posisi dari pancingan/hook
+        pemain.getPancingan().setPosition(x, y);
     }
 
     private class KeyHandler extends KeyAdapter{
