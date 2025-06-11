@@ -12,6 +12,7 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.random.RandomGenerator;
 
 public class GamePresenter {
     private Pemain pemain;
@@ -20,6 +21,9 @@ public class GamePresenter {
 
     private int currentFrame = 0;
     private int frameCounter = 0;
+    private int spawnCountdown;
+    private int spawnInterval;
+    private RandomGenerator random = RandomGenerator.getDefault();
 
     private GameOverListener gameOverListener;
 
@@ -37,12 +41,19 @@ public class GamePresenter {
 
     public void startGame(){
         panel.startGameLoop();
-        managerBola.spawnBola(10, panel.getWidth());
+        spawnCountdown = random.nextInt(30, 60);
+        managerBola.spawnBola(10, panel.getWidth(), panel.getHeight());
     }
 
     public void updateGame(){
         int dx = 0;
         int dy = 0;
+        spawnCountdown--;
+
+        if (spawnCountdown == 0) {
+            managerBola.spawnSatuBola(panel.getWidth(), panel.getHeight());
+            spawnCountdown = random.nextInt(30, 60);
+        }
 
         // Gerak ke arah atas
         if (pressedKeys.contains(KeyEvent.VK_UP) || pressedKeys.contains(KeyEvent.VK_W)) {
@@ -66,6 +77,12 @@ public class GamePresenter {
             pemain.gerak(dx, dy, panel.getWidth(), panel.getHeight());
         }
 
+        managerBola.updateAllBolas(panel.getWidth());
+
+        if (managerBola.getBola().isEmpty()) {
+            managerBola.spawnBola(5, panel.getWidth(), panel.getHeight());
+        }
+
         updateAnimation();
 
         panel.setBola(managerBola.getBola());
@@ -79,14 +96,17 @@ public class GamePresenter {
         this.pressedKeys.clear();
         this.currentFrame = 0;
         this.frameCounter = 0;
+        this.spawnCountdown = 0;
+        this.spawnInterval = 0;
 
         if (pemain != null) {
             pemain.reset();
         }
-        managerBola.spawnBola(10, panel.getWidth());
+        managerBola.spawnBola(10, panel.getWidth(), panel.getHeight());
     }
 
     private void updateAnimation() {
+        // TODO: ubah jadi render sprite pixel
         frameCounter++;
         if (frameCounter > 10) {
             currentFrame = (currentFrame + 1) % 2; // Assuming 2 frames
