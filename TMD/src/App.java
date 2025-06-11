@@ -36,7 +36,10 @@ public class App implements GameOverListener{
     }
 
     private static void mulaiGame(){
-        // Buat frame terlebih dahulu
+        // Buat Pemain (Temporary)
+        Pemain pemain = new Pemain(0, 0);
+
+        // Buat frame
         JFrame frame = new JFrame("TMD Bola-bola");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
@@ -53,7 +56,6 @@ public class App implements GameOverListener{
         mainPanel.add(gameView, "GAME");
 
         // Membuat model dan presenter untuk bagian Game utama (Gameloop)
-        Pemain pemain = new Pemain((frame.getWidth()/2), (frame.getHeight()/2));
         BolaManager managerBola = new BolaManager();
         presenter = new GamePresenter(pemain, gameView, managerBola);
         presenter.setGameOverListener(new App());
@@ -75,6 +77,9 @@ public class App implements GameOverListener{
         frame.setSize(1500, 800);
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
+
+        // Set posisi pemain di tengah layar
+        pemain.setPosition((frame.getWidth()/2) - (pemain.getSize() / 2), (frame.getHeight() / 2) - (pemain.getSize() / 2));
 
         // Tunjukkan menu terlebih dahulu
         cardLayout.show(mainPanel, "MENU");
