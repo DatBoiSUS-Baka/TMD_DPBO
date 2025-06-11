@@ -37,6 +37,8 @@ public class Pemain {
     public int getSize() { return this.size; }
     public int getSPD() { return this.SPD; }
 
+    public void setPosition(int x, int y){ this.positionX = x; this.positionY = y; }
+
     public void gerak(int dx, int dy, int boundX, int boundY){
         // Method untuk berpindah posisi
         int newX = this.positionX + (dx * this.SPD);
