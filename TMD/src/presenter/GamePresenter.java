@@ -1,5 +1,16 @@
 package presenter;
 
+/* ===================================================
+ * Filename     : GamePresenter.java
+ * Programmer   : Kasyful Haq Bachariputra
+ * Date         : 11 Juni 2025
+ * Email        : kasyfulhaqb@upi.edu
+ * Deskripsi    : package presenter yang bertugas
+ *                mengurus segala hal yang diperlukan
+ *                untuk game loop
+ * ===================================================
+ */
+
 import model.Pemain;
 import model.Bola;
 import model.BolaManager;
