@@ -116,6 +116,15 @@ public class MainGameView extends JPanel implements GameLoopContract, Runnable, 
                 g.setColor(Color.RED);
             }
             g.fillRect(pemain.getPosX(), pemain.getPosY(), pemain.getSize(), pemain.getSize());
+            if (pemain.getPancingan() != null) {
+                int pemainCenterX = pemain.getPosX() + (pemain.getSize() / 2);
+                int pemainCenterY = pemain.getPosY() + (pemain.getSize() / 2);
+                int pancinganCenterX = pemain.getPancingan().getPosX();
+                int pancinganCenterY = pemain.getPancingan().getPosY();
+
+                g.setColor(Color.BLUE);
+                g.drawLine(pemainCenterX, pemainCenterY, pancinganCenterX, pancinganCenterY);
+            }
         }
 
         for (Bola bola : bolas) {
@@ -172,5 +181,10 @@ public class MainGameView extends JPanel implements GameLoopContract, Runnable, 
     @Override
     public void mouseExited(MouseEvent e){ }
     @Override
-    public void mouseDragged(MouseEvent e){ }
+    public void mouseDragged(MouseEvent e){
+        int x = e.getX();
+        int y = e.getY();
+
+        presenter.updateHookPosition(x, y);
+    }
 }
