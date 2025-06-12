@@ -27,6 +27,9 @@ public class Pancingan {
         this.state = "Empty";
     }
 
+    public int getPosX(){ return this.positionHookX; }
+    public int getPosY(){ return this.positionHookY; }
+
     public void setPosition(int x, int y){
         this.positionHookX = x;
         this.positionHookY = y;
