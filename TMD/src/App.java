@@ -17,6 +17,7 @@ import javax.swing.SwingUtilities;
 
 import model.Pemain;
 import model.BolaManager;
+import model.Keranjang;
 import presenter.GamePresenter;
 import presenter.GameOverListener;
 import view.MainGameView;
@@ -57,7 +58,8 @@ public class App implements GameOverListener{
 
         // Membuat model dan presenter untuk bagian Game utama (Gameloop)
         BolaManager managerBola = new BolaManager();
-        presenter = new GamePresenter(pemain, gameView, managerBola);
+        Keranjang keranjang = new Keranjang(0, 0);
+        presenter = new GamePresenter(pemain, gameView, managerBola, keranjang);
         presenter.setGameOverListener(new App());
         gameView.setPemain(pemain);
 
@@ -80,6 +82,9 @@ public class App implements GameOverListener{
 
         // Set posisi pemain di tengah layar
         pemain.setPosition((frame.getWidth()/2) - (pemain.getSize() / 2), (frame.getHeight() / 2) - (pemain.getSize() / 2));
+
+        // Set posisi keranjang
+        keranjang.setPosition(((frame.getWidth() * 3) / 4) - (keranjang.getHeight() / 2), (frame.getHeight() / 2) - (keranjang.getHeight() / 2));
 
         // Tunjukkan menu terlebih dahulu
         cardLayout.show(mainPanel, "MENU");
