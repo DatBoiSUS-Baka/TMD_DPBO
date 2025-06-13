@@ -20,6 +20,7 @@ public class Pemain {
     private int SPD;
     private int size;
     private int score;
+    private int bolaCollected;
 
     private Pancingan pancingan;
 
@@ -42,8 +43,10 @@ public class Pemain {
     public int getSize() { return this.size; }
     public int getSPD() { return this.SPD; }
     public Pancingan getPancingan() { return this.pancingan; }
+    public int getBolaCollected() { return this.bolaCollected; }
 
     public void setPosition(int x, int y){ this.positionX = x; this.positionY = y; }
+    public void incrementBolaCollected() { this.bolaCollected++; }
 
     public void gerak(int dx, int dy, int boundX, int boundY){
         // Method untuk berpindah posisi
