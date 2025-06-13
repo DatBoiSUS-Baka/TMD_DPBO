@@ -43,4 +43,9 @@ public class Bola {
          */
         positionX += this.speed * direction;
     }
+
+    public void updatePosition(int x, int y){
+        this.positionX = x;
+        this.positionY = y;
+    }
 }
