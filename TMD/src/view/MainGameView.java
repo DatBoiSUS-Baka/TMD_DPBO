@@ -125,6 +125,22 @@ public class MainGameView extends JPanel implements GameLoopContract, Runnable, 
                 g.setColor(Color.BLUE);
                 g.drawLine(pemainCenterX, pemainCenterY, pancinganCenterX, pancinganCenterY);
             }
+
+            if (pemain.getPancingan().getCaughtBola() != null) {
+                Bola bolaToDraw = pemain.getPancingan().getCaughtBola();
+                g.setColor(Color.ORANGE);
+                g.fillOval(bolaToDraw.getPosX(), bolaToDraw.getPosY(), bolaToDraw.getSize(), bolaToDraw.getSize());
+
+                String value = String.valueOf(bolaToDraw.getValue());
+                g.setColor(Color.WHITE);
+                g.setFont(new Font("TimesRoman", Font.BOLD, 15));
+                int ballCenterX = bolaToDraw.getPosX() + (bolaToDraw.getSize() / 2);
+                int ballCenterY = bolaToDraw.getPosY() + (bolaToDraw.getSize() / 2);
+                int textWidth = g.getFontMetrics().stringWidth(value);
+        
+                g.drawString(value, ballCenterX - (textWidth / 2), ballCenterY + 5);
+
+            }
         }
 
         for (Bola bola : bolas) {
