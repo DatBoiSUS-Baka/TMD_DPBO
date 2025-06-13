@@ -47,6 +47,7 @@ public class MainGameView extends JPanel implements GameLoopContract, Runnable, 
     private Image[] playerWalkingFrames;
     private int currentFrame = 0;
     private int scoreToShow = 0;
+    private int bolaCollectedCount = 0;
 
     public MainGameView(){
         setPreferredSize(new Dimension(1000, 800));
@@ -69,6 +70,7 @@ public class MainGameView extends JPanel implements GameLoopContract, Runnable, 
     public void setBola(ArrayList<Bola> bola) { this.bolas = bola; }
     public void setCurrentFrame(int frame) { this.currentFrame = frame; }
     public void setScore(int score) { this.scoreToShow = score; }
+    public void setBolaCollectedCount(int bolaCount) { this.bolaCollectedCount = bolaCount; }
     public void setKeranjang(Keranjang keranjang) {this.keranjang = keranjang; }
 
     public void startGameLoop(){
@@ -115,7 +117,13 @@ public class MainGameView extends JPanel implements GameLoopContract, Runnable, 
         // Render Keranjang untuk menambah score
         if (keranjang != null) {
             g.setColor(Color.GRAY);
-            g.fillRect(keranjang.getPosX(), keranjang.getPosY(), keranjang.getWidth(), keranjang.getHeight());    
+            g.fillRect(keranjang.getPosX(), keranjang.getPosY(), keranjang.getWidth(), keranjang.getHeight());
+
+            // Render Teks Score
+            g.setColor(Color.BLACK);
+            g.setFont(new Font("TimesRoman", Font.BOLD, 20));
+            g.drawString("Score: " + scoreToShow, 50, this.getHeight() / 2);
+            g.drawString("Count: " + bolaCollectedCount, keranjang.getPosX(), keranjang.getPosY());
         }
         
         if (pemain != null) {
@@ -180,12 +188,6 @@ public class MainGameView extends JPanel implements GameLoopContract, Runnable, 
 
             g.drawString(value, ballCenterX - (textWidth / 2), ballCenterY + 5);
         }
-
-
-        // Render Teks Score
-        g.setColor(Color.BLACK);
-        g.setFont(new Font("TimesRoman", Font.BOLD, 20));
-        g.drawString("Score: " + scoreToShow, 50, this.getHeight() / 2);
     }
 
     @Override
@@ -209,7 +211,7 @@ public class MainGameView extends JPanel implements GameLoopContract, Runnable, 
         
         presenter.updateHookPosition(x, y);
     }
-    
+
     @Override
     public void mouseDragged(MouseEvent e){
         int x = e.getX();
