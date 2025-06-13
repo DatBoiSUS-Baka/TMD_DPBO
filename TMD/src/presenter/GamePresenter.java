@@ -101,6 +101,7 @@ public class GamePresenter {
 
             // Cek apakah bola yang ditangkap berada di area keranjang
             if (keranjang.isBolaInside(caughtBola)) {
+                pemain.incrementBolaCollected();
                 pemain.tambahScore(caughtBola.getValue());
                 pemain.getPancingan().releaseHook();
             }
@@ -118,6 +119,7 @@ public class GamePresenter {
         panel.setCurrentFrame(this.currentFrame);
 
         panel.setScore(pemain.getScore());
+        panel.setBolaCollectedCount(pemain.getBolaCollected());
 
         panel.refreshView();
     }
