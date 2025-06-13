@@ -14,6 +14,7 @@ package presenter;
 import model.Pemain;
 import model.Bola;
 import model.BolaManager;
+import model.Keranjang;
 import view.MainGameView;
 import presenter.GameOverListener;
 
@@ -29,6 +30,7 @@ import java.util.random.RandomGenerator;
 public class GamePresenter {
     private Pemain pemain;
     private BolaManager managerBola;
+    private Keranjang keranjang;
     private MainGameView panel;
 
     private int currentFrame = 0;
@@ -41,9 +43,10 @@ public class GamePresenter {
 
     private final Set<Integer> pressedKeys = new HashSet<>();
 
-    public GamePresenter(Pemain pemain, MainGameView panel, BolaManager managerBola){
+    public GamePresenter(Pemain pemain, MainGameView panel, BolaManager managerBola, Keranjang keranjang){
         this.pemain = pemain;
         this.managerBola = managerBola;
+        this.keranjang = keranjang;
         this.panel = panel;
 
         this.panel.addKeyListener(new KeyHandler());
@@ -55,6 +58,7 @@ public class GamePresenter {
         /*
          * Method yang dipanggil ketika game pertama dimulai
          */
+        panel.setKeranjang(this.keranjang);
         panel.startGameLoop();
         spawnCountdown = random.nextInt(30, 60);
         managerBola.spawnBola(10, panel.getWidth(), panel.getHeight());
@@ -94,17 +98,23 @@ public class GamePresenter {
         }
 
         // Cek kolisi bola dengan pemain
-        Bola collidedBola = managerBola.checkCollision(pemain);
-        if (collidedBola != null) {
-            pemain.tambahScore(collidedBola.getValue());
-            System.out.println("Terjadi collision!");
-        }
+        // Bola collidedBola = managerBola.checkCollision(pemain);
+        // if (collidedBola != null) {
+        //     pemain.tambahScore(collidedBola.getValue());
+        //     System.out.println("Terjadi collision!");
+        // }
 
         managerBola.updateAllBolas(panel.getWidth()); //Update posisi bola
 
+        Bola caughtBola;
         if (pemain.getPancingan().getCaughtBola() != null) {
+            caughtBola = pemain.getPancingan().getCaughtBola();
             // Update posisi caught ball terhadap pancingan
             pemain.getPancingan().updateCaughtBallPosition();
+            if (keranjang.isBolaInside(caughtBola)) {
+                pemain.tambahScore(caughtBola.getValue());
+                pemain.getPancingan().releaseHook();
+            }
         }
 
         // Apabila bola sudah habis, langsung tambah lagi 5
