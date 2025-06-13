@@ -111,7 +111,7 @@ public class MainGameView extends JPanel implements GameLoopContract, Runnable, 
     @Override
     protected void paintComponent(Graphics g){
         super.paintComponent(g);
-        
+
         // Render Keranjang untuk menambah score
         if (keranjang != null) {
             g.setColor(Color.GRAY);
@@ -199,18 +199,27 @@ public class MainGameView extends JPanel implements GameLoopContract, Runnable, 
     }
 
     @Override
-    public void mousePressed(MouseEvent e){presenter.handleMouseClicked(); }
-    @Override
     public void mouseMoved(MouseEvent e){
         /*
-         * Method untuk update posisi pancingan/hook
-         * berdasarkan posisi mouse
-         */
+        * Method untuk update posisi pancingan/hook
+        * berdasarkan posisi mouse
+        */
         int x = e.getX();
         int y = e.getY();
-
+        
         presenter.updateHookPosition(x, y);
     }
+    
+    @Override
+    public void mouseDragged(MouseEvent e){
+        int x = e.getX();
+        int y = e.getY();
+        
+        presenter.updateHookPosition(x, y);
+    }
+    
+    @Override
+    public void mousePressed(MouseEvent e){presenter.handleMouseClicked(); }
     @Override
     public void mouseEntered(MouseEvent e){ }
     @Override
@@ -219,11 +228,4 @@ public class MainGameView extends JPanel implements GameLoopContract, Runnable, 
     public void mouseClicked(MouseEvent e){ }
     @Override
     public void mouseExited(MouseEvent e){ }
-    @Override
-    public void mouseDragged(MouseEvent e){
-        int x = e.getX();
-        int y = e.getY();
-
-        presenter.updateHookPosition(x, y);
-    }
 }

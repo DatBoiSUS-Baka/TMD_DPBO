@@ -76,41 +76,30 @@ public class GamePresenter {
         }
 
         // Gerak ke arah atas
-        if (pressedKeys.contains(KeyEvent.VK_UP) || pressedKeys.contains(KeyEvent.VK_W)) {
-            dy = -1;
-        }
+        if (pressedKeys.contains(KeyEvent.VK_UP) || pressedKeys.contains(KeyEvent.VK_W)) { dy = -1; }
         // Gerak ke arah bawah
-        if (pressedKeys.contains(KeyEvent.VK_DOWN) || pressedKeys.contains(KeyEvent.VK_S)) {
-            dy = 1;
-        }
+        if (pressedKeys.contains(KeyEvent.VK_DOWN) || pressedKeys.contains(KeyEvent.VK_S)) { dy = 1; }
         // Gerak ke arah kiri
-        if (pressedKeys.contains(KeyEvent.VK_LEFT) || pressedKeys.contains(KeyEvent.VK_A)) {
-            dx = -1;
-        }
+        if (pressedKeys.contains(KeyEvent.VK_LEFT) || pressedKeys.contains(KeyEvent.VK_A)) { dx = -1; }
         // Gerak ke arah kanan
-        if (pressedKeys.contains(KeyEvent.VK_RIGHT) || pressedKeys.contains(KeyEvent.VK_D)) {
-            dx = 1;
-        }
+        if (pressedKeys.contains(KeyEvent.VK_RIGHT) || pressedKeys.contains(KeyEvent.VK_D)) { dx = 1; }
 
         // Memanggil method gerak ketika mendapat arah gerak
         if (dx != 0 || dy != 0) {
             pemain.gerak(dx, dy, panel.getWidth(), panel.getHeight());
         }
 
-        // Cek kolisi bola dengan pemain
-        // Bola collidedBola = managerBola.checkCollision(pemain);
-        // if (collidedBola != null) {
-        //     pemain.tambahScore(collidedBola.getValue());
-        //     System.out.println("Terjadi collision!");
-        // }
-
         managerBola.updateAllBolas(panel.getWidth()); //Update posisi bola
 
+        // Logika ketika bola tertangkap (Caught)
         Bola caughtBola;
         if (pemain.getPancingan().getCaughtBola() != null) {
             caughtBola = pemain.getPancingan().getCaughtBola();
+
             // Update posisi caught ball terhadap pancingan
             pemain.getPancingan().updateCaughtBallPosition();
+
+            // Cek apakah bola yang ditangkap berada di area keranjang
             if (keranjang.isBolaInside(caughtBola)) {
                 pemain.tambahScore(caughtBola.getValue());
                 pemain.getPancingan().releaseHook();
