@@ -29,12 +29,14 @@ import javax.swing.SwingUtilities;
 import model.Pemain;
 import model.Bola;
 import model.BolaManager;
+import model.Keranjang;
 import presenter.GamePresenter;
 import view.GameLoopContract;
 
 public class MainGameView extends JPanel implements GameLoopContract, Runnable, MouseListener, MouseMotionListener{
     private Pemain pemain;
     private ArrayList<Bola> bolas;
+    private Keranjang keranjang;
     private GamePresenter presenter;
 
     // Variabel Thread
@@ -67,6 +69,7 @@ public class MainGameView extends JPanel implements GameLoopContract, Runnable, 
     public void setBola(ArrayList<Bola> bola) { this.bolas = bola; }
     public void setCurrentFrame(int frame) { this.currentFrame = frame; }
     public void setScore(int score) { this.scoreToShow = score; }
+    public void setKeranjang(Keranjang keranjang) {this.keranjang = keranjang; }
 
     public void startGameLoop(){
         if (gameThread == null || !running) {
@@ -108,7 +111,13 @@ public class MainGameView extends JPanel implements GameLoopContract, Runnable, 
     @Override
     protected void paintComponent(Graphics g){
         super.paintComponent(g);
-
+        
+        // Render Keranjang untuk menambah score
+        if (keranjang != null) {
+            g.setColor(Color.GRAY);
+            g.fillRect(keranjang.getPosX(), keranjang.getPosY(), keranjang.getWidth(), keranjang.getHeight());    
+        }
+        
         if (pemain != null) {
             /*
              * Render semua hal yang berhubungan dengan pemain
@@ -171,6 +180,7 @@ public class MainGameView extends JPanel implements GameLoopContract, Runnable, 
 
             g.drawString(value, ballCenterX - (textWidth / 2), ballCenterY + 5);
         }
+
 
         // Render Teks Score
         g.setColor(Color.BLACK);
