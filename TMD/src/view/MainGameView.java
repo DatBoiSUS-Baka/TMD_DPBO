@@ -110,13 +110,20 @@ public class MainGameView extends JPanel implements GameLoopContract, Runnable, 
         super.paintComponent(g);
 
         if (pemain != null) {
+            /*
+             * Render semua hal yang berhubungan dengan pemain
+             */
             if (currentFrame == 0) {
                 g.setColor(Color.BLACK);    
             }else{
                 g.setColor(Color.RED);
             }
             g.fillRect(pemain.getPosX(), pemain.getPosY(), pemain.getSize(), pemain.getSize());
+
             if (pemain.getPancingan() != null) {
+                /*
+                 * Render pancingan dan garisnya
+                 */
                 int pemainCenterX = pemain.getPosX() + (pemain.getSize() / 2);
                 int pemainCenterY = pemain.getPosY() + (pemain.getSize() / 2);
                 int pancinganCenterX = pemain.getPancingan().getPosX();
@@ -127,6 +134,9 @@ public class MainGameView extends JPanel implements GameLoopContract, Runnable, 
             }
 
             if (pemain.getPancingan().getCaughtBola() != null) {
+                /*
+                 * Render bola yang tertangkap oleh pancingan
+                 */
                 Bola bolaToDraw = pemain.getPancingan().getCaughtBola();
                 g.setColor(Color.ORANGE);
                 g.fillOval(bolaToDraw.getPosX(), bolaToDraw.getPosY(), bolaToDraw.getSize(), bolaToDraw.getSize());
@@ -144,6 +154,9 @@ public class MainGameView extends JPanel implements GameLoopContract, Runnable, 
         }
 
         for (Bola bola : bolas) {
+            /*
+             * Render kumpulan bola-bola
+             */
             if (bola != null) {
                 g.setColor(Color.ORANGE);
                 g.fillOval(bola.getPosX(), bola.getPosY(), bola.getSize(), bola.getSize());
