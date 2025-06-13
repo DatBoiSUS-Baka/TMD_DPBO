@@ -102,6 +102,11 @@ public class GamePresenter {
 
         managerBola.updateAllBolas(panel.getWidth()); //Update posisi bola
 
+        if (pemain.getPancingan().getCaughtBola() != null) {
+            // Update posisi caught ball terhadap pancingan
+            pemain.getPancingan().updateCaughtBallPosition();
+        }
+
         // Apabila bola sudah habis, langsung tambah lagi 5
         if (managerBola.getBola().isEmpty()) {
             managerBola.spawnBola(5, panel.getWidth(), panel.getHeight());
@@ -149,7 +154,22 @@ public class GamePresenter {
          * Ketika mendapat signal mouseClicked,
          * akan memanggil function tryToCatch
          */
-        pemain.getPancingan().tryToCatch(managerBola.getBola());
+        if (pemain.getPancingan().getState().equals("Empty")) {
+            /*
+             * Apabila hook sedang kosong, click akan membuatnya
+             * mencoba menangkap bola
+             */
+            Bola caughtBola = pemain.getPancingan().tryToCatch(managerBola.getBola());
+            if (caughtBola != null) {
+                managerBola.getBola().remove(caughtBola);
+            }
+        }else if(pemain.getPancingan().getState().equals("Caught")){
+            /*
+             * Apabila hook sedang menangkap bola, click akan membuatnya
+             * melepaskan bola
+             */
+            pemain.getPancingan().releaseHook();
+        }
     }
 
     public void updateHookPosition(int x, int y){
