@@ -42,11 +42,11 @@ public class BolaManager {
         
         if (spawnLeft) {
             startX = -50;
-            startY = screenHeight / 8;
+            startY = screenHeight* 7 / 8;
             direction = 1;
         }else{
             startX = screenWidth + 50;
-            startY = screenHeight * 7 / 8;
+            startY = screenHeight / 8;
             direction = -1;
         }
 
