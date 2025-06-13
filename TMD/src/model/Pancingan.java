@@ -29,6 +29,8 @@ public class Pancingan {
 
     public int getPosX(){ return this.positionHookX; }
     public int getPosY(){ return this.positionHookY; }
+    public Bola getCaughtBola() { return this.caughtBola; }
+    public String getState(){ return this.state; }
 
     public void setPosition(int x, int y){
         this.positionHookX = x;
@@ -39,16 +41,23 @@ public class Pancingan {
         /*
          * Method untuk mencoba menangkap bola dengan Hook
          */
-        this.state = "Active";
         for (Bola currentBola : allBolas) {
             Rectangle hitBoxBola = new Rectangle(currentBola.getPosX(), currentBola.getPosY(), currentBola.getSize(), currentBola.getSize());
-            if (this.positionHookX > currentBola.getPosX() && this.positionHookX <= currentBola.getPosX() + currentBola.getSize() || this.positionHookY > currentBola.getPosY() && this.positionHookY <= currentBola.getPosY() + currentBola.getSize()) {
+            if (hitBoxBola.contains(positionHookX, positionHookY)) {
                 this.caughtBola = currentBola;
                 this.state = "Caught";
                 return this.caughtBola;
             }
         }
         return null;
+    }
+
+    public void updateCaughtBallPosition(){
+        /*
+         * Method untuk caughtBola mengikuti
+         * posisi pancingan
+         */
+        this.caughtBola.updatePosition(positionHookX, positionHookY);
     }
 
     public void releaseHook(){
