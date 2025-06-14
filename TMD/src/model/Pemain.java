@@ -32,7 +32,7 @@ public class Pemain {
         this.size = 100;
         this.SPD = 10;
         this.score = 0;
-        this.pancingan = new Pancingan();
+        this.pancingan = new Pancingan(this.startX, this.startY);
 
         reset(); // Melakukan reset terlebih dahulu
     }
