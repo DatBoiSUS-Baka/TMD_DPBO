@@ -14,22 +14,19 @@ import java.awt.Rectangle;
 import java.util.ArrayList;
 import java.lang.Math;
 
-import model.Bola;
-
 public class Pancingan {
-    // Posisi dari ujung hook
     private int positionHookX;
     private int positionHookY;
     private int hookSpeed;
 
-    private String state; // Terdiri dari "IDLE", "RETRACTING_CAUGHT", "RETRACTING_EMPTY" dan "SHOOTING"
+    private String state;
     private Bola caughtBola;
 
     public Pancingan(int x, int y){
         this.positionHookX = x;
         this.positionHookY = y;
         this.state = "IDLE";
-        this.hookSpeed = 10;
+        this.hookSpeed = 15; // Increased speed for better feel
     }
 
     public int getPosX(){ return this.positionHookX; }
@@ -42,90 +39,84 @@ public class Pancingan {
         this.positionHookY = y;
     }
 
-    public Bola tryToCatch(ArrayList<Bola> allBolas){
-        /*
-         * Method untuk mencoba menangkap bola dengan Hook
-         */
-        for (Bola currentBola : allBolas) {
-            Rectangle hitBoxBola = new Rectangle(currentBola.getPosX(), currentBola.getPosY(), currentBola.getSize(), currentBola.getSize());
-            if (hitBoxBola.contains(positionHookX, positionHookY)) {
-                this.caughtBola = currentBola;
-                this.state = "Caught";
-                return this.caughtBola;
-            }
-        }
-        return null;
+    public void setState(String state){
+        this.state = state;
     }
 
-    public void updateState(int targetX, int targetY, int startX, int startY, ArrayList<Bola> collectionBola, int playerX, int playerY){
+    public void updateState(int targetX, int targetY, ArrayList<Bola> collectionBola, int playerX, int playerY){
         if (this.state.equals("SHOOTING")) {
-            // Hitung vector
             int travelX = targetX - this.positionHookX;
             int travelY = targetY - this.positionHookY;
             double distance = Math.sqrt((travelX * travelX) + (travelY * travelY));
-            double directionX = travelX / distance;
-            double directionY = travelY / distance;
+            
+            // Prevent division by zero if the hook is already at the target
+            if (distance > 0) {
+                double directionX = travelX / distance;
+                double directionY = travelY / distance;
+                this.positionHookX += directionX * hookSpeed;
+                this.positionHookY += directionY * hookSpeed;
+            }
 
-            this.positionHookX += directionX * hookSpeed;
-            this.positionHookY += directionY * hookSpeed;
-
-            // Collision detection
-            Rectangle hitBoxHook = new Rectangle(this.positionHookX, this.positionHookY, 20, 20);
+            // Check for collision
             for (Bola bola : collectionBola) {
                 Rectangle hitBoxBola = new Rectangle(bola.getPosX(), bola.getPosY(), bola.getSize(), bola.getSize());
-                if (hitBoxHook.intersects(hitBoxBola)) {
+                if (hitBoxBola.contains(this.positionHookX, this.positionHookY)) {
                     this.caughtBola = bola;
                     this.state = "RETRACTING_CAUGHT";
+                    return; // Exit early since we found a ball
                 }
             }
 
-            int remainingX = targetX - this.positionHookX;
-            int remainingY = targetY - this.positionHookY;
-            distance = Math.sqrt((remainingX * remainingX) + (remainingY * remainingY));
-            directionX = remainingX / distance;
-            directionY = remainingY / distance;
-            
+            // Check for arrival (miss)
             if (distance <= this.hookSpeed) {
                 this.state = "RETRACTING_EMPTY";
             }
 
-        }else if(this.state.equals("RETRACTING_CAUGHT")){
+        } else if (this.state.equals("RETRACTING_CAUGHT")){
             int travelX = playerX - this.positionHookX;
             int travelY = playerY - this.positionHookY;
             double distance = Math.sqrt((travelX * travelX) + (travelY * travelY));
-            double directionX = travelX / distance;
-            double directionY = travelY / distance;
 
-            this.positionHookX += directionX * hookSpeed;
-            this.positionHookY += directionY * hookSpeed;
-
-            this.caughtBola.updatePosition(this.positionHookX, this.positionHookY);
-
-            int remainingX = playerX - this.positionHookX;
-            int remainingY = playerY - this.positionHookY;
-            distance = Math.sqrt((remainingX * remainingX) + (remainingY * remainingY));
-            directionX = remainingX / distance;
-            directionY = remainingY / distance;
-            
             if (distance <= this.hookSpeed) {
-                this.state = "IDLE";
+                this.state = "IDLE"; // Arrived back at player
+            } else {
+                double directionX = travelX / distance;
+                double directionY = travelY / distance;
+                this.positionHookX += directionX * hookSpeed;
+                this.positionHookY += directionY * hookSpeed;
             }
+            // Update the ball's position to stick to the hook
+            this.updateCaughtBallPosition();
             
-        }else if(this.state.equals("RETRACTING_EMPTY")){
+        } else if(this.state.equals("RETRACTING_EMPTY")){
+            int travelX = playerX - this.positionHookX;
+            int travelY = playerY - this.positionHookY;
+            double distance = Math.sqrt((travelX * travelX) + (travelY * travelY));
 
+            if (distance <= this.hookSpeed) {
+                this.state = "IDLE"; // Arrived back at player
+            } else {
+                 double directionX = travelX / distance;
+                 double directionY = travelY / distance;
+                 this.positionHookX += directionX * hookSpeed;
+                 this.positionHookY += directionY * hookSpeed;
+            }
         }
     }
 
     public void updateCaughtBallPosition(){
-        /*
-         * Method untuk caughtBola mengikuti
-         * posisi pancingan
-         */
-        this.caughtBola.updatePosition(positionHookX, positionHookY);
+        if(this.caughtBola != null) {
+            // Center the ball on the hook
+            int ballX = this.positionHookX - (this.caughtBola.getSize() / 2);
+            int ballY = this.positionHookY - (this.caughtBola.getSize() / 2);
+            this.caughtBola.updatePosition(ballX, ballY);
+        }
     }
 
     public void releaseHook(){
-        this.state = "Empty";
+        // [FIX #2] The state should return to IDLE, not "Empty".
+        // This makes it ready to be fired again immediately.
+        this.state = "IDLE";
         this.caughtBola = null;
     }
 }
