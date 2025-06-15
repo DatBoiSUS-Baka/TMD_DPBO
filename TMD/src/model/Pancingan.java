@@ -26,7 +26,7 @@ public class Pancingan {
         this.positionHookX = x;
         this.positionHookY = y;
         this.state = "IDLE";
-        this.hookSpeed = 15; // Increased speed for better feel
+        this.hookSpeed = 15;
     }
 
     public int getPosX(){ return this.positionHookX; }
@@ -49,7 +49,7 @@ public class Pancingan {
             int travelY = targetY - this.positionHookY;
             double distance = Math.sqrt((travelX * travelX) + (travelY * travelY));
             
-            // Prevent division by zero if the hook is already at the target
+            // Prevent division by zero
             if (distance > 0) {
                 double directionX = travelX / distance;
                 double directionY = travelY / distance;
@@ -78,7 +78,7 @@ public class Pancingan {
             double distance = Math.sqrt((travelX * travelX) + (travelY * travelY));
 
             if (distance <= this.hookSpeed) {
-                this.state = "IDLE"; // Arrived back at player
+                this.state = "IDLE"; 
             } else {
                 double directionX = travelX / distance;
                 double directionY = travelY / distance;
@@ -94,7 +94,7 @@ public class Pancingan {
             double distance = Math.sqrt((travelX * travelX) + (travelY * travelY));
 
             if (distance <= this.hookSpeed) {
-                this.state = "IDLE"; // Arrived back at player
+                this.state = "IDLE";
             } else {
                  double directionX = travelX / distance;
                  double directionY = travelY / distance;
@@ -106,7 +106,7 @@ public class Pancingan {
 
     public void updateCaughtBallPosition(){
         if(this.caughtBola != null) {
-            // Center the ball on the hook
+            // Update posisi bola ketika terkena hook
             int ballX = this.positionHookX - (this.caughtBola.getSize() / 2);
             int ballY = this.positionHookY - (this.caughtBola.getSize() / 2);
             this.caughtBola.updatePosition(ballX, ballY);
@@ -114,8 +114,7 @@ public class Pancingan {
     }
 
     public void releaseHook(){
-        // [FIX #2] The state should return to IDLE, not "Empty".
-        // This makes it ready to be fired again immediately.
+        // Method untuk melepaskan bola dan kembali ke state idle
         this.state = "IDLE";
         this.caughtBola = null;
     }

@@ -74,5 +74,6 @@ public class Pemain {
         this.positionX = this.startX;
         this.positionY = this.startY;
         this.score = 0;
+        this.bolaCollected = 0;
     }
 }
