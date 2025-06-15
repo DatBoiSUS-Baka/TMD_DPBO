@@ -3,6 +3,7 @@ package presenter;
 import model.Pemain;
 import model.Bola;
 import model.BolaManager;
+import model.DatabaseManager;
 import model.Keranjang;
 import view.MainGameView;
 import java.awt.event.KeyAdapter;
@@ -14,6 +15,7 @@ import java.util.random.RandomGenerator;
 public class GamePresenter {
     private Pemain pemain;
     private BolaManager managerBola;
+    private DatabaseManager databaseManager;
     private Keranjang keranjang;
     private MainGameView panel;
 
@@ -23,19 +25,22 @@ public class GamePresenter {
     private RandomGenerator random = RandomGenerator.getDefault();
     private int mousePositionX;
     private int mousePositionY;
+    private String username;
 
     private GameOverListener gameOverListener;
     private final Set<Integer> pressedKeys = new HashSet<>();
 
-    public GamePresenter(Pemain pemain, MainGameView panel, BolaManager managerBola, Keranjang keranjang){
+    public GamePresenter(Pemain pemain, MainGameView panel, BolaManager managerBola, Keranjang keranjang, DatabaseManager databaseManager){
         this.pemain = pemain;
         this.managerBola = managerBola;
+        this.databaseManager = databaseManager;
         this.keranjang = keranjang;
         this.panel = panel;
         this.panel.addKeyListener(new KeyHandler());
     }
 
     public void setGameOverListener(GameOverListener gameOverListener) { this.gameOverListener = gameOverListener; }
+    public void setCurrentPlayerUsername(String username) { this.username = username; }
 
     public void startGame(){
         panel.setKeranjang(this.keranjang);
@@ -151,11 +156,13 @@ public class GamePresenter {
         }
     }
 
+
     private class KeyHandler extends KeyAdapter{
         @Override
         public void keyPressed(KeyEvent e){
             if (e.getKeyCode() == KeyEvent.VK_SPACE) {
                 panel.stopGameLoop();
+                databaseManager.updateUserScore(username, pemain.getScore(), pemain.getBolaCollected());
                 if (gameOverListener != null) {
                     gameOverListener.gameOver();
                 }
