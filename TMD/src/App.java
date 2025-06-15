@@ -17,16 +17,20 @@ import javax.swing.SwingUtilities;
 
 import model.Pemain;
 import model.BolaManager;
+import model.DatabaseManager;
 import model.Keranjang;
 import presenter.GamePresenter;
+import presenter.LeaderboardPresenter;
 import presenter.GameOverListener;
+import presenter.StartGameListener;
 import view.MainGameView;
-import view.MenuView;
+import view.LeaderboardView;
 
-public class App implements GameOverListener{
+public class App implements GameOverListener, StartGameListener{
     private static CardLayout cardLayout;
     private static JPanel mainPanel;
     private static GamePresenter presenter;
+    private static LeaderboardPresenter lPresenter;
     public static void main(String[] args){
         SwingUtilities.invokeLater(new Runnable() {
             // Menggunakan invokeLater agar tidak terjadi error ketika menjalankan App
@@ -49,29 +53,27 @@ public class App implements GameOverListener{
         mainPanel = new JPanel(cardLayout);
 
         // Instansiasi berbagai macam view yang ada
-        MenuView menuView = new MenuView();
+        LeaderboardView leaderboardView = new LeaderboardView();
         MainGameView gameView = new MainGameView();
 
         // Tambahkan view ke Panel
-        mainPanel.add(menuView, "MENU");
+        mainPanel.add(leaderboardView, "MENU");
         mainPanel.add(gameView, "GAME");
 
         // Membuat model dan presenter untuk bagian Game utama (Gameloop)
         BolaManager managerBola = new BolaManager();
+        DatabaseManager databaseManager = new DatabaseManager();
         Keranjang keranjang = new Keranjang(0, 0);
-        presenter = new GamePresenter(pemain, gameView, managerBola, keranjang);
+
+        presenter = new GamePresenter(pemain, gameView, managerBola, keranjang, databaseManager);
+        lPresenter = new LeaderboardPresenter(databaseManager, leaderboardView);
+
         presenter.setGameOverListener(new App());
+        lPresenter.setStartGameListener(new App());
         gameView.setPemain(pemain);
 
-        // Logika untuk mengubah halaman
+        // Logika untuk mengubah presenter
         gameView.setPresenter(presenter);
-
-        menuView.addStartButtonListener(e -> {
-            cardLayout.show(mainPanel, "GAME"); 
-            gameView.setFocusable(true);
-            gameView.requestFocusInWindow();
-            presenter.startGame();
-        });
 
         // Setup dari frame
         frame.add(mainPanel);
@@ -95,11 +97,26 @@ public class App implements GameOverListener{
     public void gameOver(){
         /*
          * Menunjukkan view game over dari cardlayout
-         * serta melakukan reset posisi
+         * serta melakukan reset posisi dan score
          */
         cardLayout.show(mainPanel, "MENU");
+
+        lPresenter.refreshScore();
 
         presenter.resetGame();
     }
 
+    @Override
+    public void onStartGame(String username){
+        System.out.println(username);
+
+        presenter.setCurrentPlayerUsername(username);
+
+        cardLayout.show(mainPanel, "GAME");
+
+        mainPanel.getComponent(1).setFocusable(true);
+        mainPanel.getComponent(1).requestFocusInWindow();
+
+        presenter.startGame();
+    }
 }
