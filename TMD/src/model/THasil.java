@@ -1,33 +1,21 @@
 package model;
 
 public class THasil {
-    private String id;
-    private String nama;
-    private String email;
+    private String username;
+    private int score;
+    private int count;
 
-    public THasil(){
-
-    }
-
-    public void setId(String id){
-        this.id = id;
-    }
-    public void setNama(String nama){
-        this.nama = nama;
-    }
-    public void setEmail(String email){
-        this.email = email;
+    public THasil(String username, int score, int count){
+        this.username = username;
+        this.score = score;
+        this.count = count;
     }
 
-    public String getId(){
-        return this.id;
-    }
-    public String getNama(){
-        return this.nama;
-    }
-    public String getEmail(){
-        return this.email;
-    }
+    public String getUsername() { return this.username; }
+    public int getScore() { return this.score; }
+    public int getCount() { return this.count; }
 
-
+    public void setUsername(String username) { this.username = username; }
+    public void setScore(int score) { this.score = score; }
+    public void setCount(int count) { this.count = count; }
 }
