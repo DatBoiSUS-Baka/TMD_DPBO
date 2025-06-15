@@ -139,15 +139,17 @@ public class MainGameView extends JPanel implements GameLoopContract, Runnable, 
 
             if (pemain.getPancingan() != null) {
                 /*
-                 * Render pancingan dan garisnya
+                 * Render pancingan dan garisnya apabila tidak dalam keadaan IDLE
                  */
-                int pemainCenterX = pemain.getPosX() + (pemain.getSize() / 2);
-                int pemainCenterY = pemain.getPosY() + (pemain.getSize() / 2);
-                int pancinganCenterX = pemain.getPancingan().getPosX();
-                int pancinganCenterY = pemain.getPancingan().getPosY();
-
-                g.setColor(Color.BLUE);
-                g.drawLine(pemainCenterX, pemainCenterY, pancinganCenterX, pancinganCenterY);
+                if (!pemain.getPancingan().getState().equals("IDLE")) {
+                    int pemainCenterX = pemain.getPosX() + (pemain.getSize() / 2);
+                    int pemainCenterY = pemain.getPosY() + (pemain.getSize() / 2);
+                    int pancinganCenterX = pemain.getPancingan().getPosX();
+                    int pancinganCenterY = pemain.getPancingan().getPosY();
+    
+                    g.setColor(Color.BLUE);
+                    g.drawLine(pemainCenterX, pemainCenterY, pancinganCenterX, pancinganCenterY);    
+                }
             }
 
             if (pemain.getPancingan().getCaughtBola() != null) {
@@ -221,7 +223,7 @@ public class MainGameView extends JPanel implements GameLoopContract, Runnable, 
     }
     
     @Override
-    public void mousePressed(MouseEvent e){presenter.handleMouseClicked(); }
+    public void mousePressed(MouseEvent e){presenter.handleMouseClicked(e.getX(), e.getY()); }
     @Override
     public void mouseEntered(MouseEvent e){ }
     @Override
