@@ -23,3 +23,8 @@ TMD/bin/presenter/GameOverListener.class
 TMD/bin/model/BolaManager.class
 TMD/bin/model/Pancingan.class
 TMD/bin/model/Keranjang.class
+TMD/bin/model/DatabaseManager.class
+TMD/bin/view/LeaderboardView.class
+TMD/bin/presenter/StartGameListener.class
+TMD/bin/presenter/LeaderboardPresenter$1.class
+TMD/bin/presenter/LeaderboardPresenter.class
