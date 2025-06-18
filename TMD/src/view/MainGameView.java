@@ -17,16 +17,22 @@ import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.awt.Color;
 import java.awt.Image;
 import java.awt.event.MouseMotionListener;
-
+import java.awt.image.BufferedImage;
+import java.io.IOException;
+import java.nio.Buffer;
 import java.util.ArrayList;
 
+import javax.imageio.ImageIO;
+import javax.swing.ImageIcon;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 
 import model.Pemain;
+import model.ArtifactType;
 import model.Bola;
 import model.BolaManager;
 import model.Keranjang;
@@ -44,25 +50,46 @@ public class MainGameView extends JPanel implements GameLoopContract, Runnable, 
     private volatile boolean running = false;
     private final int FPS = 60;
 
-    private Image[] playerWalkingFrames;
+    private BufferedImage backgroundImage;
+    private BufferedImage bookImage;
+    private BufferedImage scrollImage;
+    private BufferedImage keranjangImage;
+    private BufferedImage[] playerRunAnimation;
+
     private int currentFrame = 0;
     private int scoreToShow = 0;
     private int bolaCollectedCount = 0;
 
+    private static final int PLAYER_FRAME_COUNT = 8;
+
     public MainGameView(){
         setPreferredSize(new Dimension(1000, 800));
-        loadAnimationFrames();
+        loadAssets();
         addMouseListener(this);
         addMouseMotionListener(this);
 
         bolas = new ArrayList<Bola>();
     }
 
-    public void loadAnimationFrames(){
-        /*
-         * TODO: Masukkin sprite yang mau dipake
-         */
-        playerWalkingFrames = new Image[2];
+    private void loadAssets(){
+        try {
+            backgroundImage = ImageIO.read(getClass().getResourceAsStream("/Background.png"));
+            bookImage = ImageIO.read(getClass().getResourceAsStream("/Book.png"));
+            scrollImage = ImageIO.read(getClass().getResource("/Scroll.png"));
+
+            // Initialize the animation array with the correct size
+            playerRunAnimation = new BufferedImage[PLAYER_FRAME_COUNT];
+            
+            // Load each frame one by one
+            playerRunAnimation[0] = ImageIO.read(getClass().getResourceAsStream("/Run 1.png"));
+            playerRunAnimation[1] = ImageIO.read(getClass().getResourceAsStream("/Run 2.png"));
+            playerRunAnimation[2] = ImageIO.read(getClass().getResourceAsStream("/Run 3.png"));
+            playerRunAnimation[3] = ImageIO.read(getClass().getResourceAsStream("/Run 4.png"));
+
+        } catch (IOException | IllegalArgumentException e) {
+            System.err.println("Error loading assets. Make sure files are in the 'resources' folder and the folder is in the build path.");
+            e.printStackTrace();
+        }
     }
 
     public void setPemain(Pemain pemain) { this.pemain = pemain; }
@@ -113,16 +140,23 @@ public class MainGameView extends JPanel implements GameLoopContract, Runnable, 
     @Override
     protected void paintComponent(Graphics g){
         super.paintComponent(g);
+        Graphics2D g2d = (Graphics2D) g;
+
+        if (backgroundImage != null) {
+            g2d.drawImage(backgroundImage, 0, 0, getWidth(), getHeight(), this);
+        }else{
+            g2d.setColor(Color.LIGHT_GRAY);
+        }
 
         // Render Keranjang untuk menambah score
         if (keranjang != null) {
-            g.setColor(Color.GRAY);
+            g.setColor(new Color(211, 211, 211, 200));
             g.fillRect(keranjang.getPosX(), keranjang.getPosY(), keranjang.getWidth(), keranjang.getHeight());
 
             // Render Teks Score
-            g.setColor(Color.BLACK);
+            g.setColor(Color.WHITE);
             g.setFont(new Font("TimesRoman", Font.BOLD, 20));
-            g.drawString("Score: " + scoreToShow, 50, this.getHeight() / 2);
+            g.drawString("Score: " + scoreToShow, keranjang.getPosX(), keranjang.getPosY() - 20);
             g.drawString("Count: " + bolaCollectedCount, keranjang.getPosX(), keranjang.getPosY());
         }
         
@@ -130,26 +164,33 @@ public class MainGameView extends JPanel implements GameLoopContract, Runnable, 
             /*
              * Render semua hal yang berhubungan dengan pemain
              */
-            if (currentFrame == 0) {
-                g.setColor(Color.BLACK);    
-            }else{
-                g.setColor(Color.RED);
-            }
-            g.fillRect(pemain.getPosX(), pemain.getPosY(), pemain.getSize(), pemain.getSize());
+            if (playerRunAnimation != null && playerRunAnimation[currentFrame] != null) {
+                BufferedImage frameToDraw = playerRunAnimation[currentFrame];
+                int direction = pemain.getFacingDirection();
+                int screenX = pemain.getPosX();
+                int pWidth = pemain.getWidth();
+                int pHeight = pemain.getHeight();
 
-            if (pemain.getPancingan() != null) {
-                /*
-                 * Render pancingan dan garisnya apabila tidak dalam keadaan IDLE
-                 */
-                if (!pemain.getPancingan().getState().equals("IDLE")) {
-                    int pemainCenterX = pemain.getPosX() + (pemain.getSize() / 2);
-                    int pemainCenterY = pemain.getPosY() + (pemain.getSize() / 2);
-                    int pancinganCenterX = pemain.getPancingan().getPosX();
-                    int pancinganCenterY = pemain.getPancingan().getPosY();
-    
-                    g.setColor(Color.BLUE);
-                    g.drawLine(pemainCenterX, pemainCenterY, pancinganCenterX, pancinganCenterY);    
+                // Logic to flip the image horizontally if facing left
+                if (direction == -1) {
+                    g2d.drawImage(frameToDraw, screenX + pWidth, pemain.getPosY(), -pWidth, pHeight, null);
+                } else {
+                    g2d.drawImage(frameToDraw, screenX, pemain.getPosY(), pWidth, pHeight, null);
                 }
+            } else {
+                // Fallback drawing if images failed to load
+                g2d.setColor(Color.MAGENTA);
+                g2d.fillRect(pemain.getPosX(), pemain.getPosY(), pemain.getWidth(), pemain.getHeight());
+            }
+
+            if (pemain.getPancingan() != null && !pemain.getPancingan().getState().equals("IDLE")) {
+                int pemainCenterX = pemain.getPosX() + (pemain.getWidth() / 2);
+                int pemainCenterY = pemain.getPosY() + (pemain.getHeight() / 2);
+                int pancinganX = pemain.getPancingan().getPosX();
+                int pancinganY = pemain.getPancingan().getPosY();
+
+                g2d.setColor(Color.WHITE); // Changed color for better visibility
+                g2d.drawLine(pemainCenterX, pemainCenterY, pancinganX, pancinganY);
             }
 
             if (pemain.getPancingan().getCaughtBola() != null) {
@@ -157,38 +198,33 @@ public class MainGameView extends JPanel implements GameLoopContract, Runnable, 
                  * Render bola yang tertangkap oleh pancingan
                  */
                 Bola bolaToDraw = pemain.getPancingan().getCaughtBola();
-                g.setColor(Color.ORANGE);
-                g.fillOval(bolaToDraw.getPosX(), bolaToDraw.getPosY(), bolaToDraw.getSize(), bolaToDraw.getSize());
-
-                String value = String.valueOf(bolaToDraw.getValue());
-                g.setColor(Color.WHITE);
-                g.setFont(new Font("TimesRoman", Font.BOLD, 15));
-                int ballCenterX = bolaToDraw.getPosX() + (bolaToDraw.getSize() / 2);
-                int ballCenterY = bolaToDraw.getPosY() + (bolaToDraw.getSize() / 2);
-                int textWidth = g.getFontMetrics().stringWidth(value);
-        
-                g.drawString(value, ballCenterX - (textWidth / 2), ballCenterY + 5);
-
+                Image artifactImage = getArtifactImage(bolaToDraw.getArtifactType());
+                if(artifactImage != null) {
+                    g2d.drawImage(artifactImage, bolaToDraw.getPosX(), bolaToDraw.getPosY(), bolaToDraw.getSize(), bolaToDraw.getSize(), this);
+                }
             }
         }
 
         for (Bola bola : bolas) {
-            /*
-             * Render kumpulan bola-bola
-             */
+            // [FIX] The entire drawing logic for a ball must be inside the null check.
             if (bola != null) {
-                g.setColor(Color.ORANGE);
-                g.fillOval(bola.getPosX(), bola.getPosY(), bola.getSize(), bola.getSize());
+                Image artifactImage = getArtifactImage(bola.getArtifactType());
+                if (artifactImage != null) {
+                    g2d.drawImage(artifactImage, bola.getPosX(), bola.getPosY(), bola.getSize(), bola.getSize(), this);
+                }
             }
-            String value = String.valueOf(bola.getValue());
-            g.setColor(Color.WHITE);
-            g.setFont(new Font("TimesRoman", Font.BOLD, 15));
+        }
+    }
 
-            int ballCenterX = bola.getPosX() + (bola.getSize() / 2);
-            int ballCenterY = bola.getPosY() + (bola.getSize() / 2);
-            int textWidth = g.getFontMetrics().stringWidth(value);
-
-            g.drawString(value, ballCenterX - (textWidth / 2), ballCenterY + 5);
+    private Image getArtifactImage(ArtifactType type){
+        if (type == null) return null;
+        switch (type) {
+            case BOOK:
+                return bookImage;
+            case SCROLL:
+                return scrollImage;
+            default:
+                return null;
         }
     }
 
