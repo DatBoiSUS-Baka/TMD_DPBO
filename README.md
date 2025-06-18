@@ -5,5 +5,5 @@
 javac -d bin -cp "lib/mysql-connector-j-9.3.0.jar" src/model/*.java src/presenter/*.java src/view/*.java src/App.java
 
 // Run the compiled classes and library
-java -cp "bin;lib\*" App
+java -cp "bin;lib\*;resources" App
 ```
