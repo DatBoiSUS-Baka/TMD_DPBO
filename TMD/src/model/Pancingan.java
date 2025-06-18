@@ -66,7 +66,7 @@ public class Pancingan {
                 if (hitBoxBola.contains(this.positionHookX, this.positionHookY)) {
                     this.caughtBola = bola;
                     this.state = "RETRACTING_CAUGHT";
-                    return; // Exit early since we found a ball
+                    return; 
                 }
             }
 
