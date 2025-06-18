@@ -18,12 +18,15 @@ public class Bola {
     private int size;
     private int direction;
 
-    public Bola(int startX, int startY){
+    private ArtifactType type;
+
+    public Bola(int startX, int startY, ArtifactType type){
         this.positionX = startX;
         this.positionY = startY;
         this.speed = 5;
         this.value = 0;
-        this.size = 50;
+        this.size = 64;
+        this.type = type;
     }
 
     public int getPosX() { return this.positionX; }
@@ -32,6 +35,7 @@ public class Bola {
     public int getValue() { return this.value; }
     public int getSize() { return this.size; }
     public int getDirection() { return this.direction; }
+    public ArtifactType getArtifactType() { return this.type; }
 
     public void setDirection(int direction) { this.direction = direction; }
     public void setValue(int value){ this.value = value; }
