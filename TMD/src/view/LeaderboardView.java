@@ -18,9 +18,12 @@ import javax.swing.JTextField;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import java.awt.BorderLayout;
+import java.awt.Dimension;
+import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
+import java.util.concurrent.Flow;
 
 import model.THasil;
 
@@ -31,6 +34,7 @@ public class LeaderboardView extends JPanel{
     private JPanel south = new JPanel();
     private JTextField usernameField = new JTextField();
     private JButton playButton = new JButton();
+    private JPanel leaderboardWrapper = new JPanel();
 
     private ArrayList<THasil> data;
 
@@ -41,14 +45,17 @@ public class LeaderboardView extends JPanel{
 
         leaderboardInside.setLayout(new BoxLayout(leaderboardInside, BoxLayout.Y_AXIS));
         leaderboard.setViewportView(leaderboardInside);
-        add(leaderboard, BorderLayout.CENTER);
+        leaderboard.setPreferredSize(new Dimension(400, 500));
         
         playButton.setText("Play");
         usernameField.setColumns(5);
         south.add(usernameField);
         south.add(playButton);
         add(south, BorderLayout.SOUTH);
-
+        
+        leaderboardWrapper.setLayout(new FlowLayout());
+        leaderboardWrapper.add(leaderboard);
+        add(leaderboardWrapper, BorderLayout.CENTER);
     }
 
     public void displayScores(ArrayList<THasil> data){
