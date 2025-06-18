@@ -22,9 +22,7 @@ public class BolaManager {
     private ArrayList<Bola> collectionBola = new ArrayList<Bola>();
     private RandomGenerator random = RandomGenerator.getDefault();
 
-    public BolaManager(){
-
-    }
+    public BolaManager(){}
 
     public void spawnBola(int jumlahBola, int screenWidth, int screenHeight){
         collectionBola.clear();
@@ -50,11 +48,18 @@ public class BolaManager {
             direction = -1;
         }
 
-        int randomValue = random.nextInt(1, 101);
+        ArtifactType newType = random.nextBoolean() ? ArtifactType.BOOK : ArtifactType.SCROLL;
+        int newValue = 0;
+        
+        if (newType == ArtifactType.BOOK) {
+            newValue = 50;
+        }else if(newType == ArtifactType.SCROLL){
+            newValue = 100;
+        }
 
-        collectionBola.addLast(new Bola(startX, startY));
+        collectionBola.addLast(new Bola(startX, startY, newType));
         collectionBola.getLast().setDirection(direction);
-        collectionBola.getLast().setValue(randomValue);
+        collectionBola.getLast().setValue(newValue);
     }
 
     public void updateAllBolas(int screenWidth){
@@ -68,24 +73,6 @@ public class BolaManager {
                 it.remove();
             }
         }
-    }
-
-    public Bola checkCollision (Pemain pemain){
-        /*
-         * Method untuk mengecek kolisi dari bola
-         * dan pemain
-         */
-        Iterator<Bola> it = collectionBola.iterator();
-        Rectangle hitBoxPemain = new Rectangle(pemain.getPosX(), pemain.getPosY(), pemain.getSize(), pemain.getSize());
-        while (it.hasNext()) {
-            Bola currentBola = it.next();
-            Rectangle hitBoxBola = new Rectangle(currentBola.getPosX(), currentBola.getPosY(), currentBola.getSize(), currentBola.getSize());
-            if (hitBoxPemain.intersects(hitBoxBola)) {
-                it.remove();
-                return currentBola;    
-            }
-        }
-        return null;
     }
 
     public ArrayList<Bola> getBola(){ return collectionBola; }
