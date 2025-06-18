@@ -83,7 +83,7 @@ public class App implements GameOverListener, StartGameListener{
         frame.setVisible(true);
 
         // Set posisi pemain di tengah layar
-        pemain.setPosition((frame.getWidth()/2) - (pemain.getSize() / 2), (frame.getHeight() / 2) - (pemain.getSize() / 2));
+        pemain.setPosition((frame.getWidth()/2) - (pemain.getWidth() / 2), (frame.getHeight() / 2) - (pemain.getHeight() / 2));
 
         // Set posisi keranjang
         keranjang.setPosition(((frame.getWidth() * 3) / 4) - (keranjang.getHeight() / 2), (frame.getHeight() / 2) - (keranjang.getHeight() / 2));
