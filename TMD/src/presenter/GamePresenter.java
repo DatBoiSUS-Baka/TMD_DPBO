@@ -30,6 +30,8 @@ public class GamePresenter {
     private GameOverListener gameOverListener;
     private final Set<Integer> pressedKeys = new HashSet<>();
 
+    private static final int PLAYER_ANIMATION_FRAMES = 4;
+
     public GamePresenter(Pemain pemain, MainGameView panel, BolaManager managerBola, Keranjang keranjang, DatabaseManager databaseManager){
         this.pemain = pemain;
         this.managerBola = managerBola;
@@ -66,13 +68,19 @@ public class GamePresenter {
 
         if (dx != 0 || dy != 0) {
             pemain.gerak(dx, dy, panel.getWidth(), panel.getHeight());
+            if (dx != 0) {
+                pemain.setFacingDirection(dx);
+            }
         }
+
+        boolean isMoving = (dx != 0 || dy != 0);
+        updateAnimation(isMoving);
 
         managerBola.updateAllBolas(panel.getWidth());
 
         // --- Logic for the Hook State Machine ---
-        int playerCenterX = pemain.getPosX() + (pemain.getSize() / 2);
-        int playerCenterY = pemain.getPosY() + (pemain.getSize() / 2);
+        int playerCenterX = pemain.getPosX() + (pemain.getWidth() / 2);
+        int playerCenterY = pemain.getPosY() + (pemain.getHeight() / 2);
 
         // Pancingan berada di posisi pemain terus ketika IDLE
         if (pemain.getPancingan().getState().equals("IDLE")) {
@@ -109,12 +117,25 @@ public class GamePresenter {
             managerBola.spawnBola(5, panel.getWidth(), panel.getHeight());
         }
 
-        updateAnimation();
+        updateAnimation(isMoving);
         panel.setBola(managerBola.getBola());
         panel.setCurrentFrame(this.currentFrame);
         panel.setScore(pemain.getScore());
         panel.setBolaCollectedCount(pemain.getBolaCollected());
         panel.refreshView();
+    }
+
+    private void updateAnimation(boolean isMoving) {
+        if (isMoving) {
+            frameCounter++;
+            if (frameCounter > 8) { // Adjust this value to change animation speed
+                currentFrame = (currentFrame + 1) % PLAYER_ANIMATION_FRAMES;
+                frameCounter = 0;
+            }
+        } else {
+            // When not moving, reset to the first frame for an idle pose.
+            currentFrame = 0;
+        }
     }
 
     public void resetGame(){
@@ -125,20 +146,12 @@ public class GamePresenter {
 
         if (pemain != null) {
             pemain.reset();
-            pemain.setPosition((panel.getWidth()/2) - (pemain.getSize() / 2), (panel.getHeight() / 2) - (pemain.getSize() / 2));
+            pemain.setPosition((panel.getWidth()/2) - (pemain.getWidth() / 2), (panel.getHeight() / 2) - (pemain.getHeight() / 2));
         }
         if(keranjang != null) {
             keranjang.setPosition((panel.getWidth() * 3 / 4) - (keranjang.getWidth() / 2), (panel.getHeight() / 2) - (keranjang.getHeight() / 2));
         }
         managerBola.spawnBola(10, panel.getWidth(), panel.getHeight());
-    }
-
-    private void updateAnimation() {
-        frameCounter++;
-        if (frameCounter > 10) {
-            currentFrame = (currentFrame + 1) % 2;
-            frameCounter = 0;
-        }
     }
 
     public void handleMouseClicked(int x, int y){
