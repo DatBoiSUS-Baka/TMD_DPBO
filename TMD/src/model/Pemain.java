@@ -18,10 +18,12 @@ public class Pemain {
     private int positionX;
     private int positionY;
     private int SPD;
-    private int size;
+    private int width;
+    private int height;
     private int score;
     private int bolaCollected;
 
+    private int facingDirection = 1;
     private Pancingan pancingan;
 
     public Pemain(int startX, int startY){
@@ -29,8 +31,9 @@ public class Pemain {
         this.startY = startY;
         this.positionX = startX;
         this.positionY = startY;
-        this.size = 100;
-        this.SPD = 10;
+        this.width = 210;
+        this.height = 192;
+        this.SPD = 9;
         this.score = 0;
         this.pancingan = new Pancingan(this.startX, this.startY);
 
@@ -40,13 +43,20 @@ public class Pemain {
     public int getPosX(){ return this.positionX; }
     public int getPosY(){ return this.positionY; }
     public int getScore(){ return this.score; }
-    public int getSize() { return this.size; }
+    public int getWidth() { return this.width ; }
+    public int getHeight() { return this.height ; }
     public int getSPD() { return this.SPD; }
     public Pancingan getPancingan() { return this.pancingan; }
     public int getBolaCollected() { return this.bolaCollected; }
+    public int getFacingDirection() { return this.facingDirection; }
 
     public void setPosition(int x, int y){ this.positionX = x; this.positionY = y; }
     public void incrementBolaCollected() { this.bolaCollected++; }
+    public void setFacingDirection(int direction){
+        if (direction != 0) {
+            this.facingDirection = direction;
+        }
+    }
 
     public void gerak(int dx, int dy, int boundX, int boundY){
         // Method untuk berpindah posisi
@@ -54,10 +64,10 @@ public class Pemain {
         int newY = this.positionY + (dy * this.SPD);
 
         // Cek apakah pemain berada di dalam layar atau tidak
-        if (newX >= 0 && (newX + this.size) <= boundX) {
+        if (newX >= 0 && (newX + this.width) <= boundX) {
             this.positionX = newX;
         }
-        if (newY >= 0 && (newY + this.size) <= boundY) {
+        if (newY >= 0 && (newY + this.height) <= boundY) {
             this.positionY = newY;
         }
     }
