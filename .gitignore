@@ -28,3 +28,6 @@ TMD/bin/view/LeaderboardView.class
 TMD/bin/presenter/StartGameListener.class
 TMD/bin/presenter/LeaderboardPresenter$1.class
 TMD/bin/presenter/LeaderboardPresenter.class
+TMD/bin/model/ArtifactType.class
+TMD/bin/model/SpriteSheet.class
+TMD/bin/view/MainGameView$1.class
