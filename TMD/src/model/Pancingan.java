@@ -19,6 +19,9 @@ public class Pancingan {
     private int positionHookY;
     private int hookSpeed;
 
+    private int targetX;
+    private int targetY;
+
     private String state;
     private Bola caughtBola;
 
