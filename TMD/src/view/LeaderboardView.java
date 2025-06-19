@@ -20,6 +20,7 @@ import javax.swing.JButton;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
+import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
@@ -35,6 +36,7 @@ public class LeaderboardView extends JPanel{
     private JTextField usernameField = new JTextField();
     private JButton playButton = new JButton();
     private JPanel leaderboardWrapper = new JPanel();
+    private JLabel credits = new JLabel();
 
     private ArrayList<THasil> data;
 
@@ -48,9 +50,15 @@ public class LeaderboardView extends JPanel{
         leaderboard.setPreferredSize(new Dimension(400, 500));
         
         playButton.setText("Play");
-        usernameField.setColumns(5);
-        south.add(usernameField);
-        south.add(playButton);
+        usernameField.setColumns(15);
+        south.setLayout(new BoxLayout(south, BoxLayout.Y_AXIS));
+        credits.setText("<html>Background: https://lornn.itch.io/witches-wizards-backgrounds<br>" +
+                        "Character Sprite: https://craftpix.net/freebies/free-wizard-sprite-sheets-pixel-art/</html>");
+        JPanel inputLabel = new JPanel(new FlowLayout(FlowLayout.CENTER));
+        inputLabel.add(usernameField);
+        inputLabel.add(playButton);
+        south.add(inputLabel);
+        south.add(credits);
         add(south, BorderLayout.SOUTH);
         
         leaderboardWrapper.setLayout(new FlowLayout());

@@ -9,6 +9,11 @@
  * ===================================================
  */
 
+/*
+ * Saya Kasyful Haq Bachariputra dengan NIM 2304820 mengerjakan Tugas Masa Depan dalam mata kuliah Desain dan Pemrograman Berorientasi Objek
+ * untuk keberkahanNya maka saya tidak melakukan kecurangan seperti yang telah dispesifikasikan. Aamiin.
+ */
+
 import java.awt.CardLayout;
 
 import javax.swing.JFrame;
